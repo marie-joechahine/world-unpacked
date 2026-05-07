@@ -55,6 +55,7 @@ export function FlagOverlay() {
                 sizes="(max-width: 640px) 78vw, 520px"
                 className="object-cover"
                 priority
+                unoptimized
               />
               <div className="absolute inset-0 ring-1 ring-inset ring-white/20" />
             </div>
