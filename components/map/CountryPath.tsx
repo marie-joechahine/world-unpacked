@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useMemo } from "react";
+import { memo, useMemo, type CSSProperties } from "react";
 import { Geography, type GeographyObject } from "react-simple-maps";
 import type { CountryMetadata } from "@/lib/countries";
 import { getCountryMetadata } from "@/lib/countries";
@@ -13,11 +13,52 @@ type CountryPathProps = {
   onSelect: (country: CountryMetadata) => void;
 };
 
+type GeographyVisualState = {
+  default: CSSProperties;
+  hover: CSSProperties;
+  pressed: CSSProperties;
+};
+
+const defaultCountryStyle: CSSProperties = {
+  fill: "rgba(46, 92, 124, 0.9)",
+  stroke: "rgba(125, 211, 252, 0.32)",
+  strokeWidth: 0.44,
+  opacity: 1,
+  outline: "none"
+};
+
+const hoverCountryStyle: CSSProperties = {
+  fill: "rgba(103, 232, 249, 0.94)",
+  stroke: "rgba(240, 253, 250, 0.98)",
+  strokeWidth: 0.95,
+  opacity: 1,
+  outline: "none",
+  filter: "drop-shadow(0 0 12px rgba(34, 211, 238, 0.8))"
+};
+
 function CountryPathComponent({ geography, activeIso3, onHover, onSelect }: CountryPathProps) {
   const country = useMemo(() => getCountryMetadata(geography.properties), [geography.properties]);
   const isActive = country?.iso3 === activeIso3;
   const isMuted = Boolean(activeIso3 && !isActive);
   const label = country ? `${country.name}, country` : "Unknown country boundary";
+
+  const visualStyle = useMemo<GeographyVisualState>(() => {
+    const activeStyle: CSSProperties = {
+      ...hoverCountryStyle,
+      fill: "url(#countryActiveGradient)"
+    };
+
+    const mutedStyle: CSSProperties = {
+      ...defaultCountryStyle,
+      opacity: 0.52
+    };
+
+    return {
+      default: isActive ? activeStyle : isMuted ? mutedStyle : defaultCountryStyle,
+      hover: hoverCountryStyle,
+      pressed: activeStyle
+    };
+  }, [isActive, isMuted]);
 
   return (
     <Geography
@@ -44,13 +85,7 @@ function CountryPathComponent({ geography, activeIso3, onHover, onSelect }: Coun
         isActive && "map-country-active",
         isMuted && "map-country-muted"
       )}
-      style={{
-        fill: isActive ? "rgba(34, 211, 238, 0.94)" : "rgba(46, 92, 124, 0.86)",
-        stroke: isActive ? "rgba(240, 253, 250, 0.98)" : "rgba(125, 211, 252, 0.28)",
-        strokeWidth: isActive ? 0.95 : 0.42,
-        opacity: isMuted ? 0.48 : 1,
-        filter: isActive ? "drop-shadow(0 0 12px rgba(34, 211, 238, 0.8))" : "none"
-      }}
+      style={visualStyle}
     />
   );
 }

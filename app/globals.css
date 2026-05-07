@@ -43,9 +43,13 @@ path[tabindex] {
 }
 
 .map-country {
-  vector-effect: non-scaling-stroke;
+  fill: rgba(46, 92, 124, 0.9);
+  opacity: 1;
+  stroke: rgba(125, 211, 252, 0.32);
+  stroke-width: 0.44;
   transform-box: fill-box;
   transform-origin: center;
+  vector-effect: non-scaling-stroke;
 }
 
 .map-country:hover {
@@ -58,5 +62,5 @@ path[tabindex] {
 }
 
 .map-country-muted:hover {
-  opacity: 0.86 !important;
+  opacity: 0.9 !important;
 }

@@ -1,9 +1,15 @@
 declare module "react-simple-maps" {
-  import type { ComponentType, ReactElement, SVGProps } from "react";
+  import type { ComponentType, CSSProperties, ReactElement, SVGProps } from "react";
 
   export type GeographyObject = {
     rsmKey: string;
     properties: Record<string, unknown>;
+  };
+
+  export type GeographyStyle = {
+    default?: CSSProperties;
+    hover?: CSSProperties;
+    pressed?: CSSProperties;
   };
 
   export type ComposableMapProps = SVGProps<SVGSVGElement> & {
@@ -19,8 +25,9 @@ declare module "react-simple-maps" {
     children: (props: { geographies: GeographyObject[] }) => ReactElement | ReactElement[];
   }>;
   export const Geography: ComponentType<
-    SVGProps<SVGPathElement> & {
+    Omit<SVGProps<SVGPathElement>, "style"> & {
       geography: GeographyObject;
+      style?: GeographyStyle;
       tabIndex?: number;
     }
   >;
