@@ -49,7 +49,7 @@ path[tabindex] {
 }
 
 .map-country:hover {
-  fill: rgba(103, 232, 249, 0.9) !important;
+  fill: rgba(103, 232, 249, 0.94) !important;
   opacity: 1 !important;
 }
 
@@ -58,5 +58,5 @@ path[tabindex] {
 }
 
 .map-country-muted:hover {
-  opacity: 0.78 !important;
+  opacity: 0.86 !important;
 }

@@ -45,10 +45,10 @@ function CountryPathComponent({ geography, activeIso3, onHover, onSelect }: Coun
         isMuted && "map-country-muted"
       )}
       style={{
-        fill: isActive ? "rgba(34, 211, 238, 0.92)" : "rgba(30, 64, 100, 0.68)",
-        stroke: isActive ? "rgba(240, 253, 250, 0.95)" : "rgba(125, 211, 252, 0.18)",
-        strokeWidth: isActive ? 0.9 : 0.36,
-        opacity: isMuted ? 0.35 : 1,
+        fill: isActive ? "rgba(34, 211, 238, 0.94)" : "rgba(46, 92, 124, 0.86)",
+        stroke: isActive ? "rgba(240, 253, 250, 0.98)" : "rgba(125, 211, 252, 0.28)",
+        strokeWidth: isActive ? 0.95 : 0.42,
+        opacity: isMuted ? 0.48 : 1,
         filter: isActive ? "drop-shadow(0 0 12px rgba(34, 211, 238, 0.8))" : "none"
       }}
     />
