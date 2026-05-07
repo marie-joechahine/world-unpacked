@@ -28,10 +28,11 @@ npm run typecheck
 npm run build
 ```
 
-> Note: this environment blocked registry access while scaffolding, so dependencies are declared in `package.json` but the lockfile could not be generated here.
+> Note: if you previously hit a React 19 peer-dependency conflict, remove `node_modules` and `package-lock.json` and rerun `npm install`; the project now pins React/React DOM to `18.3.1` for `react-simple-maps@3` compatibility.
 
 ## Technical decisions
 
+- React is pinned to `18.3.1` because `react-simple-maps@3` declares React peer support through React 18; this keeps `npm install` strict-peer compatible while still satisfying Next.js 15's React 18.2+ minimum.
 - `react-simple-maps` keeps the v1 renderer lightweight and SVG-native while preserving per-country pointer and keyboard accessibility.
 - D3 Equal Earth projection settings live in `lib/mapProjection.ts` so future globe or projection modes can be swapped without rewriting components.
 - Zustand stores hovered and selected countries separately so click-to-open country pages can be added without coupling to transient hover animation.
