@@ -26,9 +26,33 @@ Open `http://localhost:3000`.
 ```bash
 npm run typecheck
 npm run build
+npm run test:e2e
 ```
 
 > Note: if you previously hit a React 19 peer-dependency conflict, remove `node_modules` and `package-lock.json` and rerun `npm install`; the project now pins React/React DOM to `18.3.1` for `react-simple-maps@3` compatibility.
+
+## Playwright E2E testing
+
+Install Playwright and its browser binaries once after `npm install`:
+
+```bash
+npm run playwright:install
+```
+
+Run the automated browser checks:
+
+```bash
+npm run test:e2e
+```
+
+Useful local debugging modes:
+
+```bash
+npm run test:e2e:headed
+npm run test:e2e:ui
+```
+
+The E2E suite starts the Next.js dev server automatically through `playwright.config.ts`. Tests mock the remote GeoJSON and FlagCDN SVG responses so hover behavior, keyboard focus, and the cinematic flag reveal can be verified without depending on third-party network availability.
 
 ## Technical decisions
 
