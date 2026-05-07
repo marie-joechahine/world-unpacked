@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #030712;
-  --foreground: #f8fafc;
+  --background: #e8f7fb;
+  --foreground: #12323f;
 }
 
 * {
@@ -28,7 +28,7 @@ path[tabindex] {
 }
 
 ::selection {
-  background: rgba(56, 189, 248, 0.35);
+  background: rgba(248, 201, 106, 0.45);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -43,17 +43,17 @@ path[tabindex] {
 }
 
 .map-country {
-  fill: rgba(46, 92, 124, 0.9);
+  fill: rgba(124, 176, 130, 0.88);
   opacity: 1;
-  stroke: rgba(125, 211, 252, 0.32);
-  stroke-width: 0.44;
+  stroke: rgba(255, 255, 255, 0.72);
+  stroke-width: 0.46;
   transform-box: fill-box;
   transform-origin: center;
   vector-effect: non-scaling-stroke;
 }
 
 .map-country:hover {
-  fill: rgba(103, 232, 249, 0.94) !important;
+  fill: rgba(248, 201, 106, 0.96) !important;
   opacity: 1 !important;
 }
 
@@ -62,5 +62,5 @@ path[tabindex] {
 }
 
 .map-country-muted:hover {
-  opacity: 0.9 !important;
+  opacity: 0.92 !important;
 }

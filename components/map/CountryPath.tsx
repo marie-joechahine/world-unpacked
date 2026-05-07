@@ -20,20 +20,20 @@ type GeographyVisualState = {
 };
 
 const defaultCountryStyle: CSSProperties = {
-  fill: "rgba(46, 92, 124, 0.9)",
-  stroke: "rgba(125, 211, 252, 0.32)",
-  strokeWidth: 0.44,
+  fill: "rgba(124, 176, 130, 0.88)",
+  stroke: "rgba(255, 255, 255, 0.72)",
+  strokeWidth: 0.46,
   opacity: 1,
   outline: "none"
 };
 
 const hoverCountryStyle: CSSProperties = {
-  fill: "rgba(103, 232, 249, 0.94)",
-  stroke: "rgba(240, 253, 250, 0.98)",
+  fill: "rgba(248, 201, 106, 0.96)",
+  stroke: "rgba(255, 255, 255, 0.98)",
   strokeWidth: 0.95,
   opacity: 1,
   outline: "none",
-  filter: "drop-shadow(0 0 12px rgba(34, 211, 238, 0.8))"
+  filter: "drop-shadow(0 10px 18px rgba(107, 63, 15, 0.18))"
 };
 
 function CountryPathComponent({ geography, activeIso3, onHover, onSelect }: CountryPathProps) {
@@ -50,7 +50,7 @@ function CountryPathComponent({ geography, activeIso3, onHover, onSelect }: Coun
 
     const mutedStyle: CSSProperties = {
       ...defaultCountryStyle,
-      opacity: 0.52
+      opacity: 0.62
     };
 
     return {

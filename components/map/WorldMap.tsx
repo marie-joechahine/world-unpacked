@@ -30,14 +30,15 @@ export function WorldMap() {
 
   return (
     <div
-      className="relative z-10 mt-24 w-full max-w-7xl rounded-[2.5rem] border border-cyan-200/10 bg-slate-950/20 p-2 shadow-[0_32px_140px_rgba(8,47,73,0.45)] backdrop-blur-sm sm:mt-32 sm:p-5"
+      className="relative z-10 mt-32 w-full max-w-7xl rounded-[2.5rem] border border-white/65 bg-white/45 p-2 shadow-[0_34px_110px_rgba(13,79,107,0.16)] backdrop-blur-xl sm:mt-36 sm:p-5"
       onMouseEnter={() => setPointerInsideMap(true)}
       onMouseLeave={clearInteraction}
     >
-      <div className="pointer-events-none absolute inset-0 rounded-[2.5rem] bg-[radial-gradient(circle_at_50%_40%,rgba(34,211,238,0.16),transparent_52%)]" />
-      <div className="relative aspect-[1.75/1] w-full overflow-hidden rounded-[2rem] border border-white/5 bg-[radial-gradient(circle_at_50%_52%,rgba(12,74,110,0.5),rgba(2,6,23,0.9)_56%,rgba(0,0,0,0.88))]">
-        <div className="pointer-events-none absolute inset-x-8 top-1/2 h-px bg-cyan-100/10" />
-        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[72%] w-[72%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-200/10 shadow-[inset_0_0_80px_rgba(34,211,238,0.08)]" />
+      <div className="pointer-events-none absolute inset-0 rounded-[2.5rem] bg-[linear-gradient(135deg,rgba(255,255,255,0.82),rgba(221,244,239,0.42)_42%,rgba(248,201,106,0.16))]" />
+      <div className="relative aspect-[1.75/1] w-full overflow-hidden rounded-[2rem] border border-white/75 bg-[radial-gradient(circle_at_50%_44%,rgba(77,196,191,0.5),rgba(152,217,211,0.34)_42%,rgba(247,228,191,0.36)_78%),linear-gradient(180deg,#dff6f8_0%,#ccefe8_48%,#f4dfb9_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.95)]">
+        <div className="pointer-events-none absolute inset-x-8 top-1/2 h-px bg-white/55" />
+        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[72%] w-[72%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/60 bg-[#0d4f6b]/[0.025] shadow-[inset_0_0_90px_rgba(255,255,255,0.45)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_16%,rgba(255,255,255,0.62),transparent_28%),radial-gradient(circle_at_84%_18%,rgba(248,201,106,0.22),transparent_25%)]" />
 
         <ComposableMap
           projection="geoEqualEarth"
@@ -50,9 +51,9 @@ export function WorldMap() {
         >
           <defs>
             <linearGradient id="countryActiveGradient" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0%" stopColor="#67e8f9" />
-              <stop offset="58%" stopColor="#0891b2" />
-              <stop offset="100%" stopColor="#155e75" />
+              <stop offset="0%" stopColor="#fff5d6" />
+              <stop offset="46%" stopColor="#f8c96a" />
+              <stop offset="100%" stopColor="#00a896" />
             </linearGradient>
           </defs>
           <Geographies geography={geographySource}>

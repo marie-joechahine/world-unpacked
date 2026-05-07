@@ -16,7 +16,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <body className="bg-slate-950 font-sans text-white antialiased" suppressHydrationWarning>{children}</body>
+      <body className="bg-[#e8f7fb] font-sans text-[#12323f] antialiased" suppressHydrationWarning>{children}</body>
     </html>
   );
 }
