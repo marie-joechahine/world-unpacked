@@ -1,0 +1,11 @@
+.appShell {
+  min-height: 100dvh;
+  background: #0b0f12;
+}
+
+.experimentContent {
+  min-width: 0;
+  height: 100dvh;
+  min-height: 0;
+  overflow: auto;
+}

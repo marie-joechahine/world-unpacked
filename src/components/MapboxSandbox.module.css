@@ -1,0 +1,469 @@
+.shell {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgb(8 13 18 / 0.86), rgb(20 24 28 / 0.52)),
+    #0a0f14;
+  color: #f8fafc;
+}
+
+.map {
+  position: absolute;
+  inset: 0;
+}
+
+.storyHidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(0.75rem);
+  transition:
+    opacity 240ms ease,
+    transform 240ms ease;
+}
+
+.cinematicActive :global(.mapboxgl-control-container),
+.cinematicActive :global(.mapboxgl-ctrl-top-left),
+.cinematicActive :global(.mapboxgl-ctrl-top-right),
+.cinematicActive :global(.mapboxgl-ctrl-bottom-left),
+.cinematicActive :global(.mapboxgl-ctrl-bottom-right) {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms ease;
+}
+
+.floatingFlag {
+  --flag-enter-lift: 112%;
+  --flag-lift: 128%;
+
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  width: 7rem;
+  pointer-events: none;
+  transform: translate(calc(var(--flag-x) * 1px - 50%), calc(var(--flag-y) * 1px - var(--flag-lift)));
+  animation:
+    floatingFlagEnter 150ms ease-out,
+    floatingFlagPulse 1s ease-in-out 150ms infinite alternate;
+}
+
+.flagImage {
+  display: block;
+  aspect-ratio: 3 / 2;
+  width: 100%;
+  border: 1px solid rgb(255 255 255 / 0.44);
+  border-radius: 6px;
+  background-image: var(--flag-image);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  box-shadow:
+    0 16px 34px rgb(0 0 0 / 0.38),
+    0 0 0 1px rgb(0 0 0 / 0.24);
+}
+
+.flagLabel {
+  position: absolute;
+  right: -0.45rem;
+  bottom: -0.45rem;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 999px;
+  background: rgb(9 13 18 / 0.9);
+  padding: 0.2rem 0.45rem;
+  color: rgb(255 255 255 / 0.9);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  box-shadow: 0 8px 18px rgb(0 0 0 / 0.32);
+}
+
+.panel,
+.statsPanel {
+  position: absolute;
+  z-index: 2;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 8px;
+  background: rgb(10 15 20 / 0.84);
+  box-shadow: 0 24px 70px rgb(0 0 0 / 0.34);
+  backdrop-filter: blur(18px);
+}
+
+.panel {
+  left: 1rem;
+  top: 4rem;
+  width: min(25rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 5rem);
+  overflow: auto;
+  padding: 1rem;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.panelActions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.4rem;
+}
+
+.panelHeader h1 {
+  margin: 0.2rem 0 0;
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.kicker,
+.groupLabel,
+.statsPanel dt,
+.statsPanel p {
+  margin: 0;
+  color: rgb(203 213 225 / 0.72);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.iconButton,
+.settingsLauncher,
+.segmented button,
+.presetGrid button,
+.selectControl {
+  min-height: 2.15rem;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: 6px;
+  background: rgb(255 255 255 / 0.08);
+  color: #f8fafc;
+  font-size: 0.82rem;
+  font-weight: 700;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.iconButton {
+  padding: 0 0.72rem;
+}
+
+.settingsLauncher {
+  position: absolute;
+  top: 1rem;
+  left: 5.35rem;
+  z-index: 3;
+  padding: 0 0.78rem;
+  box-shadow: 0 16px 36px rgb(0 0 0 / 0.3);
+  backdrop-filter: blur(16px);
+}
+
+.iconButton:hover,
+.settingsLauncher:hover,
+.segmented button:hover,
+.presetGrid button:hover {
+  border-color: rgb(45 212 191 / 0.48);
+  background: rgb(45 212 191 / 0.12);
+}
+
+.iconButton:active,
+.settingsLauncher:active,
+.segmented button:active,
+.presetGrid button:active {
+  transform: translateY(1px);
+}
+
+.settingsLauncher:focus-visible {
+  outline: 3px solid rgb(250 204 21 / 0.38);
+  outline-offset: 2px;
+}
+
+.controlGroup {
+  margin-top: 0.9rem;
+}
+
+.selectControl {
+  width: 100%;
+  margin-top: 0.48rem;
+  padding: 0 0.72rem;
+  color-scheme: dark;
+}
+
+.selectControl:hover {
+  border-color: rgb(45 212 191 / 0.48);
+  background: rgb(45 212 191 / 0.12);
+}
+
+.selectControl:focus-visible {
+  outline: 2px solid rgb(45 212 191 / 0.74);
+  outline-offset: 2px;
+}
+
+.selectControl option {
+  background: #0a0f14;
+  color: #f8fafc;
+}
+
+.segmented {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  gap: 0.35rem;
+  margin-top: 0.48rem;
+}
+
+.segmented button {
+  overflow-wrap: anywhere;
+  padding: 0 0.55rem;
+  text-transform: capitalize;
+}
+
+.segmented .activeSegment {
+  border-color: rgb(45 212 191 / 0.62);
+  background: rgb(45 212 191 / 0.2);
+  color: #99f6e4;
+}
+
+.controlGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+  margin-top: 0.95rem;
+}
+
+.toggle {
+  display: flex;
+  min-height: 2.15rem;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: 6px;
+  background: rgb(255 255 255 / 0.06);
+  padding: 0 0.62rem;
+  color: rgb(241 245 249 / 0.9);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.toggle input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #2dd4bf;
+}
+
+.toggle span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.presetGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+  margin-top: 0.48rem;
+}
+
+.presetGrid button {
+  padding: 0 0.45rem;
+}
+
+.error {
+  margin: 0.95rem 0 0;
+  border: 1px solid rgb(251 113 133 / 0.35);
+  border-radius: 6px;
+  background: rgb(127 29 29 / 0.28);
+  padding: 0.7rem;
+  color: #fecdd3;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.statsPanel {
+  right: 1rem;
+  bottom: 1rem;
+  width: min(24rem, calc(100vw - 2rem));
+  padding: 0.9rem;
+}
+
+.selectionSummary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.selectionSummary > div {
+  min-width: 0;
+}
+
+.selectedFlag {
+  display: block;
+  flex: 0 0 auto;
+  width: 4.8rem;
+  aspect-ratio: 3 / 2;
+  border: 1px solid rgb(255 255 255 / 0.28);
+  border-radius: 5px;
+  background-image: var(--selected-flag-image);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  box-shadow:
+    0 10px 24px rgb(0 0 0 / 0.28),
+    0 0 0 1px rgb(0 0 0 / 0.2);
+}
+
+.statsPanel strong {
+  display: block;
+  margin-top: 0.18rem;
+  overflow: hidden;
+  color: #f8fafc;
+  font-size: 1rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.statsPanel dl {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.72rem;
+  margin: 0.85rem 0 0;
+}
+
+.statsPanel dd {
+  margin: 0.12rem 0 0;
+  overflow: hidden;
+  color: #f8fafc;
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-size: 0.82rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.popup :global(.mapboxgl-popup-content) {
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 8px;
+  background: rgb(10 15 20 / 0.94);
+  box-shadow: 0 18px 40px rgb(0 0 0 / 0.34);
+  color: #f8fafc;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  padding: 0.72rem 0.82rem;
+}
+
+.popup :global(.mapboxgl-popup-tip) {
+  border-top-color: rgb(10 15 20 / 0.94);
+  border-bottom-color: rgb(10 15 20 / 0.94);
+}
+
+.popup strong,
+.popup span {
+  display: block;
+}
+
+.popup strong {
+  font-size: 0.92rem;
+}
+
+.popup span {
+  margin-top: 0.16rem;
+  color: rgb(203 213 225 / 0.82);
+  font-size: 0.76rem;
+}
+
+@keyframes floatingFlagEnter {
+  from {
+    opacity: 0;
+    transform: translate(
+        calc(var(--flag-x) * 1px - 50%),
+        calc(var(--flag-y) * 1px - var(--flag-enter-lift))
+      )
+      scale(0.92);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(
+        calc(var(--flag-x) * 1px - 50%),
+        calc(var(--flag-y) * 1px - var(--flag-lift))
+      )
+      scale(1);
+  }
+}
+
+@keyframes floatingFlagPulse {
+  from {
+    filter: saturate(1) brightness(1);
+    transform: translate(
+        calc(var(--flag-x) * 1px - 50%),
+        calc(var(--flag-y) * 1px - var(--flag-lift))
+      )
+      scale(0.97);
+  }
+
+  to {
+    filter: saturate(1.14) brightness(1.08);
+    transform: translate(
+        calc(var(--flag-x) * 1px - 50%),
+        calc(var(--flag-y) * 1px - var(--flag-lift))
+      )
+      scale(1.03);
+  }
+}
+
+@media (max-width: 760px) {
+  .panel {
+    max-height: min(58dvh, calc(100dvh - 14rem));
+  }
+
+  .statsPanel {
+    left: 1rem;
+    right: auto;
+  }
+
+  .statsPanel dl {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 460px) {
+  .panel,
+  .statsPanel {
+    border-radius: 7px;
+  }
+
+  .panel {
+    left: 0.75rem;
+    top: 3.55rem;
+    width: calc(100vw - 1.5rem);
+    max-height: min(56dvh, calc(100dvh - 14rem));
+  }
+
+  .settingsLauncher {
+    top: 0.75rem;
+    left: 5rem;
+  }
+
+  .floatingFlag {
+    --flag-enter-lift: 82%;
+    --flag-lift: 94%;
+
+    width: 5.8rem;
+  }
+
+  .controlGrid,
+  .presetGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .statsPanel dl {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

@@ -1,0 +1,6 @@
+.overlayCanvas {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+}

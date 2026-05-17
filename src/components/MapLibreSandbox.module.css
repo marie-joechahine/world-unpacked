@@ -1,0 +1,14 @@
+.storyHidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(0.75rem);
+  transition:
+    opacity 240ms ease,
+    transform 240ms ease;
+}
+
+.cinematicActive :global(.maplibregl-control-container) {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms ease;
+}

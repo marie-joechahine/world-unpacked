@@ -1,0 +1,640 @@
+{
+  "maplibre": [
+    {
+      "step": "initial",
+      "file": "C:\\Projects\\world-unpacked\\ux-review-shots\\maplibre-01-initial.png",
+      "state": {
+        "url": "http://localhost:3000/",
+        "buttons": [
+          {
+            "text": "Menu",
+            "rect": {
+              "left": 12,
+              "top": 12,
+              "width": 61,
+              "height": 36
+            }
+          },
+          {
+            "text": "© Mapterhorn",
+            "rect": {
+              "left": 18,
+              "top": 795,
+              "width": 74,
+              "height": 14
+            }
+          },
+          {
+            "text": "Settings",
+            "rect": {
+              "left": 80,
+              "top": 12,
+              "width": 83,
+              "height": 36
+            }
+          }
+        ],
+        "text": "Menu\n1000 km\n© Mapterhorn | Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community\nSettings\n\nHovered feature\n\nMove over a country\n\nADM0_A3\n\nVisible countries\n\n78\n\nSource events\n\n16"
+      }
+    },
+    {
+      "step": "after lebanon tap",
+      "file": "C:\\Projects\\world-unpacked\\ux-review-shots\\maplibre-02-country-card.png",
+      "state": {
+        "url": "http://localhost:3000/",
+        "buttons": [
+          {
+            "text": "Menu",
+            "rect": {
+              "left": 12,
+              "top": 12,
+              "width": 61,
+              "height": 36
+            }
+          },
+          {
+            "text": "© Mapterhorn",
+            "rect": {
+              "left": 18,
+              "top": 795,
+              "width": 74,
+              "height": 14
+            }
+          },
+          {
+            "text": "Learn more",
+            "rect": {
+              "left": 16,
+              "top": 709,
+              "width": 358,
+              "height": 50
+            }
+          },
+          {
+            "text": "Next country",
+            "rect": {
+              "left": 16,
+              "top": 770,
+              "width": 358,
+              "height": 50
+            }
+          },
+          {
+            "text": "Settings",
+            "rect": {
+              "left": 80,
+              "top": 12,
+              "width": 83,
+              "height": 36
+            }
+          }
+        ],
+        "text": "Menu\n50 km\n© Mapterhorn | Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community\n\nMAPLIBRE\n\nLebanon\n\nلبنان\n\nLearn more\nNext country\nSettings\n\nHovered feature\n\nLebanon\n\nLB\n\nVisible countries\n\n78\n\nSource events\n\n35"
+      }
+    },
+    {
+      "step": "after Learn more",
+      "clicked": {
+        "x": 195,
+        "y": 734.09375,
+        "text": "Learn more",
+        "rect": {
+          "left": 16,
+          "top": 709.296875,
+          "width": 358,
+          "height": 49.59375
+        }
+      },
+      "file": "C:\\Projects\\world-unpacked\\ux-review-shots\\maplibre-03-learn-more.png",
+      "state": {
+        "url": "http://localhost:3000/",
+        "buttons": [
+          {
+            "text": "Menu",
+            "rect": {
+              "left": 12,
+              "top": 12,
+              "width": 61,
+              "height": 36
+            }
+          },
+          {
+            "text": "© Mapterhorn",
+            "rect": {
+              "left": 18,
+              "top": 795,
+              "width": 74,
+              "height": 14
+            }
+          },
+          {
+            "text": "Next",
+            "rect": {
+              "left": 280,
+              "top": 765,
+              "width": 75,
+              "height": 40
+            }
+          },
+          {
+            "text": "Settings",
+            "rect": {
+              "left": 80,
+              "top": 12,
+              "width": 83,
+              "height": 36
+            }
+          }
+        ],
+        "text": "Menu\n30 km\n© Mapterhorn | Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community\n\nMAPLIBRE\n\nLebanon\n\nلبنان\n\nPOSITION\n\nEastern Mediterranean coast\nLebanon is a narrow mountain country on the Levant coast, with the Mediterranean Sea to the west, Syria to the north and east, and Israel to the south.\nNext\nSettings\n\nHovered feature\n\nMove over a country\n\nADM0_A3\n\nVisible countries\n\n5\n\nSource events\n\n39"
+      }
+    },
+    {
+      "step": "after Next",
+      "clicked": {
+        "x": 317.296875,
+        "y": 784.609375,
+        "text": "Next",
+        "rect": {
+          "left": 279.984375,
+          "top": 764.609375,
+          "width": 74.625,
+          "height": 40
+        }
+      },
+      "file": "C:\\Projects\\world-unpacked\\ux-review-shots\\maplibre-04-next.png",
+      "state": {
+        "url": "http://localhost:3000/",
+        "buttons": [
+          {
+            "text": "Menu",
+            "rect": {
+              "left": 12,
+              "top": 12,
+              "width": 61,
+              "height": 36
+            }
+          },
+          {
+            "text": "© Mapterhorn",
+            "rect": {
+              "left": 18,
+              "top": 795,
+              "width": 74,
+              "height": 14
+            }
+          },
+          {
+            "text": "Next country",
+            "rect": {
+              "left": 16,
+              "top": 777,
+              "width": 358,
+              "height": 50
+            }
+          },
+          {
+            "text": "Settings",
+            "rect": {
+              "left": 80,
+              "top": 12,
+              "width": 83,
+              "height": 36
+            }
+          }
+        ],
+        "text": "Menu\n30 km\n© Mapterhorn | Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community\n\nMAPLIBRE\n\nLebanon\n\nلبنان\n\nFLAG MEANING\n\nThe cedar is Lebanon's living emblem\nThe green cedar anchors the flag as a symbol of Lebanon. The red bands are commonly tied to blood shed for liberation, while the white band evokes peace and the snow of the mountains.\nRed: liberation\nWhite: peace\nCedar: Lebanon\nNext country\nSettings\n\nHovered feature\n\nMove over a country\n\nADM0_A3\n\nVisible countries\n\n5\n\nSource events\n\n39"
+      }
+    },
+    {
+      "step": "after Next country",
+      "clicked": {
+        "x": 195,
+        "y": 801.609375,
+        "text": "Next country",
+        "rect": {
+          "left": 16,
+          "top": 776.8125,
+          "width": 358,
+          "height": 49.59375
+        }
+      },
+      "file": "C:\\Projects\\world-unpacked\\ux-review-shots\\maplibre-05-next-country.png",
+      "state": {
+        "url": "http://localhost:3000/",
+        "buttons": [
+          {
+            "text": "Menu",
+            "rect": {
+              "left": 12,
+              "top": 12,
+              "width": 61,
+              "height": 36
+            }
+          },
+          {
+            "text": "© Mapterhorn",
+            "rect": {
+              "left": 18,
+              "top": 795,
+              "width": 74,
+              "height": 14
+            }
+          },
+          {
+            "text": "Learn more",
+            "rect": {
+              "left": 16,
+              "top": 720,
+              "width": 358,
+              "height": 50
+            }
+          },
+          {
+            "text": "Next country",
+            "rect": {
+              "left": 16,
+              "top": 781,
+              "width": 358,
+              "height": 50
+            }
+          },
+          {
+            "text": "Settings",
+            "rect": {
+              "left": 80,
+              "top": 12,
+              "width": 83,
+              "height": 36
+            }
+          }
+        ],
+        "text": "Menu\n3000 km\n© Mapterhorn | Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community\n\nMAPLIBRE\n\nRussia\n\nРоссия\n\nLearn more\nNext country\nSettings\n\nHovered feature\n\nMove over a country\n\nADM0_A3\n\nVisible countries\n\n148\n\nSource events\n\n47"
+      }
+    }
+  ],
+  "mapbox": [
+    {
+      "step": "initial",
+      "file": "C:\\Projects\\world-unpacked\\ux-review-shots\\mapbox-01-initial.png",
+      "state": {
+        "url": "http://localhost:3000/mapbox",
+        "buttons": [
+          {
+            "text": "Menu",
+            "rect": {
+              "left": 12,
+              "top": 12,
+              "width": 61,
+              "height": 36
+            }
+          },
+          {
+            "text": "© Mapbox",
+            "rect": {
+              "left": 0,
+              "top": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "text": "© OpenStreetMap",
+            "rect": {
+              "left": 0,
+              "top": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "text": "Improve this map",
+            "rect": {
+              "left": 0,
+              "top": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "text": "Settings",
+            "rect": {
+              "left": 80,
+              "top": 12,
+              "width": 81,
+              "height": 34
+            }
+          }
+        ],
+        "text": "Menu\n1,000 km\nUse two fingers to move the map\nUse ctrl + scroll to zoom the map\nSettings\n\nSELECTED\n\nNone\nLNG\n55.271\nLAT\n25.205\nZOOM\n2.25\nPITCH\n0 deg\nBEARING\n0 deg\nTILES\nidle\nSTYLES\n1"
+      }
+    },
+    {
+      "step": "after lebanon tap",
+      "file": "C:\\Projects\\world-unpacked\\ux-review-shots\\mapbox-02-country-card.png",
+      "state": {
+        "url": "http://localhost:3000/mapbox",
+        "buttons": [
+          {
+            "text": "Menu",
+            "rect": {
+              "left": 12,
+              "top": 12,
+              "width": 61,
+              "height": 36
+            }
+          },
+          {
+            "text": "© Mapbox",
+            "rect": {
+              "left": 0,
+              "top": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "text": "© OpenStreetMap",
+            "rect": {
+              "left": 0,
+              "top": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "text": "Improve this map",
+            "rect": {
+              "left": 0,
+              "top": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "text": "Learn more",
+            "rect": {
+              "left": 16,
+              "top": 709,
+              "width": 358,
+              "height": 50
+            }
+          },
+          {
+            "text": "Next country",
+            "rect": {
+              "left": 16,
+              "top": 770,
+              "width": 358,
+              "height": 50
+            }
+          },
+          {
+            "text": "Settings",
+            "rect": {
+              "left": 80,
+              "top": 12,
+              "width": 81,
+              "height": 34
+            }
+          }
+        ],
+        "text": "Menu\n50 km\nUse two fingers to move the map\nUse ctrl + scroll to zoom the map\n\nMAPBOX\n\nLebanon\n\nلبنان\n\nLearn more\nNext country\nSettings\n\nSELECTED\n\nLebanon\nLNG\n35.919\nLAT\n33.650\nZOOM\n6.75\nPITCH\n52 deg\nBEARING\n-10 deg\nTILES\nloading\nSTYLES\n1"
+      }
+    },
+    {
+      "step": "after Learn more",
+      "clicked": {
+        "x": 195,
+        "y": 734.09375,
+        "text": "Learn more",
+        "rect": {
+          "left": 16,
+          "top": 709.296875,
+          "width": 358,
+          "height": 49.59375
+        }
+      },
+      "file": "C:\\Projects\\world-unpacked\\ux-review-shots\\mapbox-03-learn-more.png",
+      "state": {
+        "url": "http://localhost:3000/mapbox",
+        "buttons": [
+          {
+            "text": "Menu",
+            "rect": {
+              "left": 12,
+              "top": 12,
+              "width": 61,
+              "height": 36
+            }
+          },
+          {
+            "text": "© Mapbox",
+            "rect": {
+              "left": 0,
+              "top": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "text": "© OpenStreetMap",
+            "rect": {
+              "left": 0,
+              "top": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "text": "Improve this map",
+            "rect": {
+              "left": 0,
+              "top": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "text": "Next",
+            "rect": {
+              "left": 280,
+              "top": 765,
+              "width": 75,
+              "height": 40
+            }
+          },
+          {
+            "text": "Settings",
+            "rect": {
+              "left": 80,
+              "top": 12,
+              "width": 81,
+              "height": 34
+            }
+          }
+        ],
+        "text": "Menu\n50 km\nUse two fingers to move the map\nUse ctrl + scroll to zoom the map\n\nMAPBOX\n\nLebanon\n\nلبنان\n\nPOSITION\n\nEastern Mediterranean coast\nLebanon is a narrow mountain country on the Levant coast, with the Mediterranean Sea to the west, Syria to the north and east, and Israel to the south.\nNext\nSettings\n\nSELECTED\n\nLebanon\nLNG\n35.870\nLAT\n33.647\nZOOM\n7.02\nPITCH\n0 deg\nBEARING\n0 deg\nTILES\nidle\nSTYLES\n1"
+      }
+    },
+    {
+      "step": "after Next",
+      "clicked": {
+        "x": 317.296875,
+        "y": 784.609375,
+        "text": "Next",
+        "rect": {
+          "left": 279.984375,
+          "top": 764.609375,
+          "width": 74.625,
+          "height": 40
+        }
+      },
+      "file": "C:\\Projects\\world-unpacked\\ux-review-shots\\mapbox-04-next.png",
+      "state": {
+        "url": "http://localhost:3000/mapbox",
+        "buttons": [
+          {
+            "text": "Menu",
+            "rect": {
+              "left": 12,
+              "top": 12,
+              "width": 61,
+              "height": 36
+            }
+          },
+          {
+            "text": "© Mapbox",
+            "rect": {
+              "left": 0,
+              "top": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "text": "© OpenStreetMap",
+            "rect": {
+              "left": 0,
+              "top": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "text": "Improve this map",
+            "rect": {
+              "left": 0,
+              "top": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "text": "Next country",
+            "rect": {
+              "left": 16,
+              "top": 777,
+              "width": 358,
+              "height": 50
+            }
+          },
+          {
+            "text": "Settings",
+            "rect": {
+              "left": 80,
+              "top": 12,
+              "width": 81,
+              "height": 34
+            }
+          }
+        ],
+        "text": "Menu\n50 km\nUse two fingers to move the map\nUse ctrl + scroll to zoom the map\n\nMAPBOX\n\nLebanon\n\nلبنان\n\nFLAG MEANING\n\nThe cedar is Lebanon's living emblem\nThe green cedar anchors the flag as a symbol of Lebanon. The red bands are commonly tied to blood shed for liberation, while the white band evokes peace and the snow of the mountains.\nRed: liberation\nWhite: peace\nCedar: Lebanon\nNext country\nSettings\n\nSELECTED\n\nLebanon\nLNG\n35.870\nLAT\n33.647\nZOOM\n7.02\nPITCH\n0 deg\nBEARING\n0 deg\nTILES\nidle\nSTYLES\n1"
+      }
+    },
+    {
+      "step": "after Next country",
+      "clicked": {
+        "x": 195,
+        "y": 801.609375,
+        "text": "Next country",
+        "rect": {
+          "left": 16,
+          "top": 776.8125,
+          "width": 358,
+          "height": 49.59375
+        }
+      },
+      "file": "C:\\Projects\\world-unpacked\\ux-review-shots\\mapbox-05-next-country.png",
+      "state": {
+        "url": "http://localhost:3000/mapbox",
+        "buttons": [
+          {
+            "text": "Menu",
+            "rect": {
+              "left": 12,
+              "top": 12,
+              "width": 61,
+              "height": 36
+            }
+          },
+          {
+            "text": "© Mapbox",
+            "rect": {
+              "left": 0,
+              "top": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "text": "© OpenStreetMap",
+            "rect": {
+              "left": 0,
+              "top": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "text": "Improve this map",
+            "rect": {
+              "left": 0,
+              "top": 0,
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "text": "Learn more",
+            "rect": {
+              "left": 16,
+              "top": 722,
+              "width": 358,
+              "height": 50
+            }
+          },
+          {
+            "text": "Next country",
+            "rect": {
+              "left": 16,
+              "top": 783,
+              "width": 358,
+              "height": 50
+            }
+          },
+          {
+            "text": "Settings",
+            "rect": {
+              "left": 80,
+              "top": 12,
+              "width": 81,
+              "height": 34
+            }
+          }
+        ],
+        "text": "Menu\n3,000 km\nUse two fingers to move the map\nUse ctrl + scroll to zoom the map\n\nMAPBOX\n\nRussia\n\nРоссия\n\nLearn more\nNext country\nSettings\n\nSELECTED\n\nRussia\nLNG\n56.760\nLAT\n26.754\nZOOM\n1.13\nPITCH\n1 deg\nBEARING\n0 deg\nTILES\nidle\nSTYLES\n1"
+      }
+    }
+  ]
+}
