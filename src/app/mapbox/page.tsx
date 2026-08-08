@@ -1,5 +1,10 @@
+import { ExperimentShell } from "@/components/ExperimentShell";
 import { MapboxSandbox } from "@/components/MapboxSandbox";
 
 export default function MapboxPage() {
-  return <MapboxSandbox />;
+  return (
+    <ExperimentShell>
+      <MapboxSandbox />
+    </ExperimentShell>
+  );
 }

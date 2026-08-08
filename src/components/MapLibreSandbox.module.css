@@ -12,3 +12,211 @@
   pointer-events: none;
   transition: opacity 240ms ease;
 }
+
+.topControls {
+  position: absolute;
+  top: 1rem;
+  left: 5.35rem;
+  z-index: 20;
+  display: flex;
+  max-width: min(32rem, calc(100vw - 6.35rem));
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.settingsButton,
+.journeyButton {
+  height: 2.25rem;
+  border: 1px solid rgb(255 255 255 / 0.15);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 750;
+  letter-spacing: 0;
+  box-shadow: 0 18px 42px rgb(0 0 0 / 0.34);
+  backdrop-filter: blur(18px);
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.settingsButton {
+  background: rgb(17 24 32 / 0.88);
+  padding: 0 0.75rem;
+}
+
+.journeyButton {
+  border-color: rgb(34 224 198 / 0.45);
+  background:
+    linear-gradient(180deg, rgb(13 47 52 / 0.86), rgb(8 27 34 / 0.9)),
+    rgb(17 24 32 / 0.88);
+  padding: 0 0.95rem;
+  text-shadow: 0 0 18px rgb(143 220 226 / 0.2);
+  box-shadow:
+    0 18px 42px rgb(0 0 0 / 0.34),
+    0 0 22px rgb(34 224 198 / 0.16);
+}
+
+.settingsButton:hover,
+.journeyButton:hover,
+.journeyButton[data-active="true"] {
+  border-color: rgb(34 224 198 / 0.68);
+  background: rgb(16 67 70 / 0.82);
+  box-shadow:
+    0 18px 42px rgb(0 0 0 / 0.34),
+    0 0 26px rgb(34 224 198 / 0.22);
+}
+
+.settingsButton:active,
+.journeyButton:active {
+  transform: translateY(1px);
+}
+
+.settingsButton:focus-visible,
+.journeyButton:focus-visible,
+.regionMarker:focus-visible {
+  outline: 3px solid rgb(34 224 198 / 0.34);
+  outline-offset: 2px;
+}
+
+.regionMarker {
+  --region-color: #22e0c6;
+
+  display: block;
+  max-width: 9.5rem;
+  border: 1px solid color-mix(in srgb, var(--region-color) 68%, transparent);
+  border-radius: 999px;
+  background: rgb(6 24 30 / 0.72);
+  padding: 0.28rem 0.56rem;
+  color: #ffffff;
+  font: 750 0.68rem/1.1 var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow:
+    0 10px 26px rgb(0 0 0 / 0.36),
+    0 0 18px color-mix(in srgb, var(--region-color) 16%, transparent);
+  backdrop-filter: blur(14px);
+  cursor: pointer;
+  opacity: 0.88;
+  transform: translateY(0);
+  transition:
+    opacity 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+  touch-action: manipulation;
+}
+
+.regionMarker:hover,
+.regionMarker[data-selected="true"] {
+  border-color: #22e0c6;
+  background: rgb(9 52 58 / 0.82);
+  box-shadow:
+    0 12px 30px rgb(0 0 0 / 0.38),
+    0 0 24px rgb(34 224 198 / 0.28);
+  opacity: 1;
+}
+
+.regionMarker[data-muted="true"] {
+  opacity: 0.52;
+}
+
+.regionMarker[data-selected="true"] {
+  transform: translateY(-1px);
+}
+
+.regionMarker[data-compact="true"] {
+  padding: 0.22rem 0.46rem;
+  font-size: 0.62rem;
+}
+
+.journeyPanel {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 10;
+  width: min(24rem, calc(100vw - 2rem));
+  border: 1px solid rgb(34 224 198 / 0.38);
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, rgb(10 37 42 / 0.84), rgb(8 19 26 / 0.9)),
+    rgb(17 24 32 / 0.88);
+  padding: 1rem;
+  color: #ffffff;
+  box-shadow:
+    0 22px 54px rgb(0 0 0 / 0.42),
+    0 0 28px rgb(34 224 198 / 0.16);
+  backdrop-filter: blur(18px);
+}
+
+.journeyPanel[data-selected="false"] {
+  border-color: rgb(143 220 226 / 0.28);
+}
+
+.journeyKicker,
+.journeyTitle,
+.journeyInstruction {
+  margin: 0;
+}
+
+.journeyKicker {
+  color: rgb(191 245 241 / 0.72);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.journeyTitle {
+  margin-top: 0.3rem;
+  overflow-wrap: anywhere;
+  color: #ffffff;
+  font-size: 1.35rem;
+  font-weight: 850;
+  line-height: 1.15;
+}
+
+.journeyInstruction {
+  color: rgb(226 245 245 / 0.88);
+  font-size: 0.9rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+@media (max-width: 640px) {
+  .journeyPanel {
+    right: 0.75rem;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    width: auto;
+    border-radius: 10px;
+    padding: 0.9rem;
+  }
+}
+
+@media (max-width: 460px) {
+  .topControls {
+    top: 0.75rem;
+    right: 0.75rem;
+    left: 5rem;
+    max-width: none;
+  }
+
+  .settingsButton,
+  .journeyButton {
+    height: 2.15rem;
+    font-size: 0.78rem;
+  }
+
+  .journeyButton {
+    padding: 0 0.72rem;
+  }
+
+  .settingsButton {
+    padding: 0 0.62rem;
+  }
+}

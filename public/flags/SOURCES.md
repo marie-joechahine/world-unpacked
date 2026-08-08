@@ -2,6 +2,8 @@
 
 These SVGs are local copies downloaded from Wikimedia Commons original files. The original set was downloaded on 2026-05-16; `JP.svg`, `RU.svg`, and `US.svg` were added on 2026-05-17.
 
+Additional Caribbean journey flags live in `public/flags/caribbean/SOURCES.md`.
+
 | Local file | Commons source |
 | --- | --- |
 | `BB.svg` | https://commons.wikimedia.org/wiki/File:Flag_of_Barbados.svg |

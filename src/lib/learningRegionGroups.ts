@@ -1,0 +1,348 @@
+export type LearningRegionMetadata = {
+  countryCount?: number;
+  difficulty?: string;
+  description?: string;
+};
+
+export type LearningRegionGroup = {
+  id: string;
+  name: string;
+  color: `#${string}`;
+  labelCoordinates: readonly [number, number];
+  labelMinZoom?: number;
+  countryCodes: readonly string[];
+  metadata?: LearningRegionMetadata;
+};
+
+export type CountryGroupingLayer = {
+  id: string;
+  name: string;
+  groups: readonly LearningRegionGroup[];
+};
+
+export const LEARNING_REGION_GROUPS = [
+  {
+    id: "north-america",
+    name: "North America",
+    color: "#4FB8A8",
+    labelCoordinates: [-105, 51],
+    labelMinZoom: 1.15,
+    countryCodes: ["CAN", "USA", "MEX", "GRL", "SPM", "BMU"],
+  },
+  {
+    id: "central-america",
+    name: "Central America",
+    color: "#6FAF8F",
+    labelCoordinates: [-87.5, 14.8],
+    labelMinZoom: 1.75,
+    countryCodes: ["BLZ", "CRI", "GTM", "HND", "NIC", "PAN", "SLV"],
+  },
+  {
+    id: "caribbean",
+    name: "Caribbean",
+    color: "#55BFD0",
+    labelCoordinates: [-72, 19],
+    labelMinZoom: 1.85,
+    countryCodes: [
+      "AIA",
+      "ABW",
+      "ATG",
+      "BHS",
+      "BRB",
+      "BLM",
+      "CUB",
+      "CUW",
+      "CYM",
+      "DMA",
+      "DOM",
+      "GRD",
+      "GLP",
+      "HTI",
+      "JAM",
+      "KNA",
+      "LCA",
+      "MAF",
+      "MSR",
+      "MTQ",
+      "PRI",
+      "SXM",
+      "TCA",
+      "TTO",
+      "VCT",
+      "VGB",
+      "VIR",
+    ],
+  },
+  {
+    id: "south-america",
+    name: "South America",
+    color: "#22E0C6",
+    labelCoordinates: [-62, -16],
+    labelMinZoom: 1.15,
+    countryCodes: [
+      "ARG",
+      "BOL",
+      "BRA",
+      "CHL",
+      "COL",
+      "ECU",
+      "FLK",
+      "GUF",
+      "GUY",
+      "PER",
+      "PRY",
+      "SUR",
+      "URY",
+      "VEN",
+    ],
+  },
+  {
+    id: "europe",
+    name: "Europe",
+    color: "#6EA3B8",
+    labelCoordinates: [14, 51],
+    labelMinZoom: 1.2,
+    countryCodes: [
+      "ALA",
+      "ALB",
+      "AND",
+      "AUT",
+      "BEL",
+      "BGR",
+      "BIH",
+      "BLR",
+      "CHE",
+      "CYP",
+      "CZE",
+      "DEU",
+      "DNK",
+      "ESP",
+      "EST",
+      "FIN",
+      "FRA",
+      "FRO",
+      "GBR",
+      "GGY",
+      "GIB",
+      "GRC",
+      "HRV",
+      "HUN",
+      "IMN",
+      "IRL",
+      "ISL",
+      "ITA",
+      "JEY",
+      "KOS",
+      "XKX",
+      "LIE",
+      "LTU",
+      "LUX",
+      "LVA",
+      "MCO",
+      "MDA",
+      "MKD",
+      "MLT",
+      "MNE",
+      "NLD",
+      "NOR",
+      "POL",
+      "PRT",
+      "ROU",
+      "RUS",
+      "SMR",
+      "SRB",
+      "SVK",
+      "SVN",
+      "SWE",
+      "TUR",
+      "UKR",
+      "VAT",
+    ],
+  },
+  {
+    id: "north-africa",
+    name: "North Africa",
+    color: "#B5A36A",
+    labelCoordinates: [12, 27],
+    labelMinZoom: 1.45,
+    countryCodes: ["DZA", "EGY", "ESH", "LBY", "MAR", "SDN", "TUN"],
+  },
+  {
+    id: "west-africa",
+    name: "West Africa",
+    color: "#7FA36B",
+    labelCoordinates: [-4, 11],
+    labelMinZoom: 1.55,
+    countryCodes: [
+      "BEN",
+      "BFA",
+      "CPV",
+      "CIV",
+      "GHA",
+      "GIN",
+      "GMB",
+      "GNB",
+      "LBR",
+      "MLI",
+      "MRT",
+      "NER",
+      "NGA",
+      "SEN",
+      "SLE",
+      "TGO",
+    ],
+  },
+  {
+    id: "sub-saharan-africa",
+    name: "Sub-Saharan Africa",
+    color: "#5F8F68",
+    labelCoordinates: [24, -7],
+    labelMinZoom: 1.2,
+    countryCodes: [
+      "AGO",
+      "BDI",
+      "BWA",
+      "CAF",
+      "COD",
+      "COG",
+      "COM",
+      "DJI",
+      "ERI",
+      "ETH",
+      "GAB",
+      "GNQ",
+      "KEN",
+      "LSO",
+      "MDG",
+      "MOZ",
+      "MUS",
+      "MWI",
+      "MYT",
+      "NAM",
+      "REU",
+      "RWA",
+      "SYC",
+      "SHN",
+      "SOM",
+      "SSD",
+      "STP",
+      "SWZ",
+      "TCD",
+      "TZA",
+      "UGA",
+      "ZAF",
+      "ZMB",
+      "ZWE",
+    ],
+  },
+  {
+    id: "central-asia",
+    name: "Central Asia",
+    color: "#7897A5",
+    labelCoordinates: [68, 43],
+    labelMinZoom: 1.35,
+    countryCodes: ["KAZ", "KGZ", "TJK", "TKM", "UZB"],
+  },
+  {
+    id: "south-asia",
+    name: "South Asia",
+    color: "#68B89A",
+    labelCoordinates: [78, 22],
+    labelMinZoom: 1.35,
+    countryCodes: ["AFG", "BGD", "BTN", "IND", "IOT", "LKA", "MDV", "NPL", "PAK"],
+  },
+  {
+    id: "east-asia",
+    name: "East Asia",
+    color: "#7CC7D8",
+    labelCoordinates: [113, 36],
+    labelMinZoom: 1.15,
+    countryCodes: ["CHN", "HKG", "JPN", "KOR", "MAC", "MNG", "PRK", "TWN"],
+  },
+  {
+    id: "southeast-asia",
+    name: "Southeast Asia",
+    color: "#2EC6D3",
+    labelCoordinates: [106, 8],
+    labelMinZoom: 1.45,
+    countryCodes: [
+      "BRN",
+      "CCK",
+      "CXR",
+      "IDN",
+      "KHM",
+      "LAO",
+      "MMR",
+      "MYS",
+      "PHL",
+      "SGP",
+      "THA",
+      "TLS",
+      "VNM",
+    ],
+  },
+  {
+    id: "oceania",
+    name: "Oceania",
+    color: "#3B8FB3",
+    labelCoordinates: [136, -25],
+    labelMinZoom: 1.1,
+    countryCodes: ["AUS", "FJI", "NCL", "NZL", "PNG", "SLB", "VUT"],
+  },
+  {
+    id: "pacific",
+    name: "Pacific",
+    color: "#8FDCE2",
+    labelCoordinates: [-162, -9],
+    labelMinZoom: 1.45,
+    countryCodes: [
+      "ASM",
+      "COK",
+      "FSM",
+      "GUM",
+      "KIR",
+      "MHL",
+      "MNP",
+      "NIU",
+      "NRU",
+      "PCN",
+      "PLW",
+      "PYF",
+      "TKL",
+      "TON",
+      "TUV",
+      "UMI",
+      "WLF",
+      "WSM",
+    ],
+  },
+] as const satisfies readonly LearningRegionGroup[];
+
+export const COUNTRY_GROUPING_LAYERS = [
+  {
+    id: "learning-regions",
+    name: "Learning Regions",
+    groups: LEARNING_REGION_GROUPS,
+  },
+] as const satisfies readonly CountryGroupingLayer[];
+
+export const DEFAULT_COUNTRY_GROUPING_LAYER = COUNTRY_GROUPING_LAYERS[0];
+
+export function groupsForCountryCode(
+  groupingLayer: CountryGroupingLayer,
+  countryCode: string,
+) {
+  return groupingLayer.groups.filter((group) => group.countryCodes.includes(countryCode));
+}
+
+export function groupById(groupingLayer: CountryGroupingLayer, groupId: string | null) {
+  if (!groupId) {
+    return null;
+  }
+
+  return groupingLayer.groups.find((group) => group.id === groupId) ?? null;
+}
+
+export function uniqueCountryCodes(groupingLayer: CountryGroupingLayer) {
+  return [...new Set(groupingLayer.groups.flatMap((group) => [...group.countryCodes]))];
+}

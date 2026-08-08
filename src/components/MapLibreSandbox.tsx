@@ -2,6 +2,8 @@
 
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import maplibregl, {
+  type FilterSpecification,
+  type LayerSpecification,
   type LngLatBoundsLike,
   type Map,
   type MapLayerMouseEvent,
@@ -15,6 +17,13 @@ import {
   nextCinematicCountry,
   type CinematicCountry,
 } from "@/lib/cinematicCountries";
+import {
+  DEFAULT_COUNTRY_GROUPING_LAYER,
+  groupById,
+  groupsForCountryCode,
+  uniqueCountryCodes,
+  type LearningRegionGroup,
+} from "@/lib/learningRegionGroups";
 import { hasFlag } from "country-flag-icons";
 import {
   CountryCinematicOverlay,
@@ -67,6 +76,12 @@ type MapStats = {
   tilesLoaded: boolean;
 };
 
+type LearningRegionMarker = {
+  marker: maplibregl.Marker;
+  element: HTMLButtonElement;
+  group: LearningRegionGroup;
+};
+
 const INITIAL_CENTER: [number, number] = [55.2708, 25.2048];
 const INITIAL_ZOOM = 2.25;
 const TERRAIN_EXAGGERATION = 4;
@@ -86,6 +101,21 @@ const INTERACTION_LAYER = "country-interaction-fill";
 const HOVER_GLOW_LAYER = "country-hover-glow";
 const HOVER_FILL_LAYER = "country-hover-fill";
 const HOVER_LINE_LAYER = "country-hover-line";
+const JOURNEY_GROUPING_LAYER = DEFAULT_COUNTRY_GROUPING_LAYER;
+const LEARNING_REGIONS_FILL_LAYER = "learning-regions-fill";
+const LEARNING_REGIONS_LINE_LAYER = "learning-regions-line";
+const LEARNING_REGIONS_SELECTED_FILL_LAYER = "learning-regions-selected-fill";
+const LEARNING_REGIONS_SELECTED_GLOW_LAYER = "learning-regions-selected-glow";
+const LEARNING_REGIONS_SELECTED_LINE_LAYER = "learning-regions-selected-line";
+const LEARNING_REGION_LAYER_IDS = [
+  LEARNING_REGIONS_FILL_LAYER,
+  LEARNING_REGIONS_LINE_LAYER,
+  LEARNING_REGIONS_SELECTED_FILL_LAYER,
+  LEARNING_REGIONS_SELECTED_GLOW_LAYER,
+  LEARNING_REGIONS_SELECTED_LINE_LAYER,
+] as const;
+const LEARNING_REGION_SELECTED_BORDER = "#22E0C6";
+const LEARNING_REGION_COUNTRY_CODES = uniqueCountryCodes(JOURNEY_GROUPING_LAYER);
 
 const SATELLITE_ATTRIBUTION =
   "Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community";
@@ -300,11 +330,21 @@ const EXPERIMENT_STYLE: StyleSpecification = {
     },
     [TERRAIN_SOURCE]: {
       type: "raster-dem",
-      url: "https://tiles.mapterhorn.com/tilejson.json",
+      tiles: ["https://tiles.mapterhorn.com/{z}/{x}/{y}.webp"],
+      attribution: "<a href='https://mapterhorn.com/attribution'>© Mapterhorn</a>",
+      bounds: [-180, -85.0511287, 180, 85.0511287],
+      encoding: "terrarium",
+      tileSize: 512,
+      maxzoom: 12,
     },
     [HILLSHADE_SOURCE]: {
       type: "raster-dem",
-      url: "https://tiles.mapterhorn.com/tilejson.json",
+      tiles: ["https://tiles.mapterhorn.com/{z}/{x}/{y}.webp"],
+      attribution: "<a href='https://mapterhorn.com/attribution'>© Mapterhorn</a>",
+      bounds: [-180, -85.0511287, 180, 85.0511287],
+      encoding: "terrarium",
+      tileSize: 512,
+      maxzoom: 12,
     },
   },
   terrain: {
@@ -786,6 +826,178 @@ function countryAlpha2(properties: maplibregl.GeoJSONFeature["properties"]) {
   return null;
 }
 
+function learningRegionColorExpression(fallback = "rgba(255, 255, 255, 0)") {
+  const expression: unknown[] = ["match", ["get", "ADM0_A3"]];
+
+  JOURNEY_GROUPING_LAYER.groups.forEach((group) => {
+    expression.push([...group.countryCodes], group.color);
+  });
+
+  expression.push(fallback);
+  return expression;
+}
+
+function countryCodesFilter(countryCodes: readonly string[]) {
+  if (countryCodes.length === 0) {
+    return ["==", ["get", "ADM0_A3"], "__learning_region_none__"] as unknown as FilterSpecification;
+  }
+
+  return [
+    "in",
+    ["get", "ADM0_A3"],
+    ["literal", [...countryCodes]],
+  ] as unknown as FilterSpecification;
+}
+
+function learningRegionLayerSpecs(): LayerSpecification[] {
+  const activeRegionFilter = countryCodesFilter(LEARNING_REGION_COUNTRY_CODES);
+
+  return [
+    {
+      id: LEARNING_REGIONS_FILL_LAYER,
+      type: "fill",
+      source: COUNTRY_SOURCE,
+      "source-layer": COUNTRY_LAYER,
+      filter: activeRegionFilter,
+      layout: {
+        visibility: "none",
+      },
+      paint: {
+        "fill-color": learningRegionColorExpression(),
+        "fill-opacity": 0.08,
+      },
+    },
+    {
+      id: LEARNING_REGIONS_LINE_LAYER,
+      type: "line",
+      source: COUNTRY_SOURCE,
+      "source-layer": COUNTRY_LAYER,
+      filter: activeRegionFilter,
+      layout: {
+        visibility: "none",
+      },
+      paint: {
+        "line-color": learningRegionColorExpression("#6fd7ce"),
+        "line-width": ["interpolate", ["linear"], ["zoom"], 1, 1.2, 4, 1.7, 8, 2.2],
+        "line-opacity": 0.56,
+      },
+    },
+    {
+      id: LEARNING_REGIONS_SELECTED_FILL_LAYER,
+      type: "fill",
+      source: COUNTRY_SOURCE,
+      "source-layer": COUNTRY_LAYER,
+      filter: countryCodesFilter([]),
+      layout: {
+        visibility: "none",
+      },
+      paint: {
+        "fill-color": learningRegionColorExpression(LEARNING_REGION_SELECTED_BORDER),
+        "fill-opacity": 0.12,
+      },
+    },
+    {
+      id: LEARNING_REGIONS_SELECTED_GLOW_LAYER,
+      type: "line",
+      source: COUNTRY_SOURCE,
+      "source-layer": COUNTRY_LAYER,
+      filter: countryCodesFilter([]),
+      layout: {
+        visibility: "none",
+      },
+      paint: {
+        "line-color": LEARNING_REGION_SELECTED_BORDER,
+        "line-width": ["interpolate", ["linear"], ["zoom"], 1, 7, 4, 11, 8, 16],
+        "line-opacity": 0.22,
+        "line-blur": 5.5,
+      },
+    },
+    {
+      id: LEARNING_REGIONS_SELECTED_LINE_LAYER,
+      type: "line",
+      source: COUNTRY_SOURCE,
+      "source-layer": COUNTRY_LAYER,
+      filter: countryCodesFilter([]),
+      layout: {
+        visibility: "none",
+      },
+      paint: {
+        "line-color": LEARNING_REGION_SELECTED_BORDER,
+        "line-width": ["interpolate", ["linear"], ["zoom"], 1, 2.4, 4, 2.9, 8, 3.4],
+        "line-opacity": 0.86,
+      },
+    },
+  ] as unknown as LayerSpecification[];
+}
+
+function ensureLearningRegionLayers(map: Map) {
+  if (!map.getSource(COUNTRY_SOURCE) || !map.getLayer(HOVER_GLOW_LAYER)) {
+    return false;
+  }
+
+  learningRegionLayerSpecs().forEach((layer) => {
+    if (!map.getLayer(layer.id)) {
+      map.addLayer(layer, HOVER_GLOW_LAYER);
+    }
+  });
+
+  return true;
+}
+
+function setLearningRegionLayersVisibility(map: Map, visible: boolean) {
+  const visibility = visible ? "visible" : "none";
+
+  LEARNING_REGION_LAYER_IDS.forEach((layerId) => {
+    if (map.getLayer(layerId)) {
+      map.setLayoutProperty(layerId, "visibility", visibility);
+    }
+  });
+}
+
+function updateLearningRegionSelection(map: Map, selectedGroup: LearningRegionGroup | null) {
+  if (!map.getLayer(LEARNING_REGIONS_FILL_LAYER)) {
+    return;
+  }
+
+  const selectedFilter = countryCodesFilter(selectedGroup?.countryCodes ?? []);
+
+  [
+    LEARNING_REGIONS_SELECTED_FILL_LAYER,
+    LEARNING_REGIONS_SELECTED_GLOW_LAYER,
+    LEARNING_REGIONS_SELECTED_LINE_LAYER,
+  ].forEach((layerId) => {
+    if (map.getLayer(layerId)) {
+      map.setFilter(layerId, selectedFilter);
+    }
+  });
+
+  map.setPaintProperty(
+    LEARNING_REGIONS_FILL_LAYER,
+    "fill-opacity",
+    selectedGroup ? 0.045 : 0.08,
+  );
+  map.setPaintProperty(
+    LEARNING_REGIONS_LINE_LAYER,
+    "line-opacity",
+    selectedGroup ? 0.34 : 0.56,
+  );
+  map.setPaintProperty(
+    LEARNING_REGIONS_SELECTED_FILL_LAYER,
+    "fill-opacity",
+    selectedGroup ? 0.13 : 0,
+  );
+  map.setPaintProperty(
+    LEARNING_REGIONS_SELECTED_GLOW_LAYER,
+    "line-opacity",
+    selectedGroup ? 0.24 : 0,
+  );
+  map.setPaintProperty(
+    LEARNING_REGIONS_SELECTED_LINE_LAYER,
+    "line-opacity",
+    selectedGroup ? 0.9 : 0,
+  );
+}
+
 function hoverStateValue(value: number, fallback = 0) {
   return ["case", ["boolean", ["feature-state", "hover"], false], value, fallback];
 }
@@ -964,6 +1176,8 @@ export function MapLibreSandbox() {
   const hoveredCountryIdRef = useRef<string | number | null>(null);
   const selectedCountryFeatureIdRef = useRef<string | number | null>(null);
   const lessonActiveRef = useRef(false);
+  const journeySelectionModeRef = useRef(false);
+  const learningRegionMarkersRef = useRef<LearningRegionMarker[]>([]);
   const hoverModeRef = useRef<HoverMode>("border");
   const frameTimeRef = useRef<number | null>(null);
   const fpsSamplesRef = useRef<number[]>([]);
@@ -974,13 +1188,21 @@ export function MapLibreSandbox() {
   const [hoverMode, setHoverMode] = useState<HoverMode>("border");
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [styleReady, setStyleReady] = useState(false);
+  const [mapError, setMapError] = useState<string | null>(null);
   const [hoveredCountry, setHoveredCountry] = useState<HoveredCountry | null>(null);
+  const [isJourneySelectionMode, setIsJourneySelectionMode] = useState(false);
+  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
   const [cinematicCountry, setCinematicCountry] = useState<CinematicCountry | null>(null);
   const [cinematicPhase, setCinematicPhase] = useState<CinematicPhase>("intro");
   const [stats, setStats] = useState<MapStats>(INITIAL_STATS);
   const [r3fPreset, setR3fPreset] = useState<R3FPresetMode>("off");
   const [r3fCamera, setR3fCamera] = useState<R3FCameraMode>("ortho");
   const [r3fIntensity, setR3fIntensity] = useState(0.65);
+
+  const selectedJourneyGroup = useMemo(
+    () => groupById(JOURNEY_GROUPING_LAYER, selectedGroupId),
+    [selectedGroupId],
+  );
 
   const syncCamera = useCallback(() => {
     const map = mapRef.current;
@@ -1034,6 +1256,11 @@ export function MapLibreSandbox() {
     );
   }, []);
 
+  const clearLearningRegionMarkers = useCallback(() => {
+    learningRegionMarkersRef.current.forEach(({ marker }) => marker.remove());
+    learningRegionMarkersRef.current = [];
+  }, []);
+
   const clearCinematicTimers = useCallback(() => {
     cinematicTimersRef.current.forEach((timer) => window.clearTimeout(timer));
     cinematicTimersRef.current = [];
@@ -1080,6 +1307,34 @@ export function MapLibreSandbox() {
     }
 
     setHoveredCountry(null);
+
+    if (map) {
+      map.stop();
+      map.getCanvas().style.cursor = "";
+      setMapInteractionsEnabled(map, true);
+    }
+  }, [clearCinematicTimers, setFeatureHover]);
+
+  const handleStartJourney = useCallback(() => {
+    const map = mapRef.current;
+
+    clearCinematicTimers();
+    setSettingsOpen(false);
+    setCinematicCountry(null);
+    setCinematicPhase("intro");
+    setFeatureHover(selectedCountryFeatureIdRef.current, false);
+    selectedCountryFeatureIdRef.current = null;
+
+    if (hoveredCountryIdRef.current != null) {
+      setFeatureHover(hoveredCountryIdRef.current, false);
+      hoveredCountryIdRef.current = null;
+    }
+
+    setHoveredCountry(null);
+    if (!journeySelectionModeRef.current) {
+      setSelectedGroupId(null);
+    }
+    setIsJourneySelectionMode(true);
 
     if (map) {
       map.stop();
@@ -1158,6 +1413,10 @@ export function MapLibreSandbox() {
   }, [cinematicCountry]);
 
   useEffect(() => {
+    journeySelectionModeRef.current = isJourneySelectionMode;
+  }, [isJourneySelectionMode]);
+
+  useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!lessonActiveRef.current) {
         return;
@@ -1180,23 +1439,167 @@ export function MapLibreSandbox() {
   }, [handleCloseLesson, handleStoryAdvance, handleStoryBack]);
 
   useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !styleReady) {
+      return;
+    }
+
+    if (isJourneySelectionMode && !ensureLearningRegionLayers(map)) {
+      return;
+    }
+
+    setLearningRegionLayersVisibility(map, isJourneySelectionMode);
+    updateLearningRegionSelection(map, isJourneySelectionMode ? selectedJourneyGroup : null);
+  }, [isJourneySelectionMode, selectedJourneyGroup, styleReady]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !styleReady || !isJourneySelectionMode) {
+      return;
+    }
+
+    if (!ensureLearningRegionLayers(map)) {
+      return;
+    }
+
+    const handleLearningRegionClick = (event: MapLayerMouseEvent) => {
+      if (!journeySelectionModeRef.current || lessonActiveRef.current) {
+        return;
+      }
+
+      const feature = event.features?.[0];
+      if (!feature) {
+        return;
+      }
+
+      const groups = groupsForCountryCode(JOURNEY_GROUPING_LAYER, countryCode(feature.properties));
+      const group = groups[0];
+      if (!group) {
+        return;
+      }
+
+      if (hoveredCountryIdRef.current != null) {
+        setFeatureHover(hoveredCountryIdRef.current, false);
+        hoveredCountryIdRef.current = null;
+      }
+
+      setHoveredCountry(null);
+      setSelectedGroupId(group.id);
+      map.getCanvas().style.cursor = "pointer";
+    };
+
+    const handleLearningRegionMove = () => {
+      if (journeySelectionModeRef.current && !lessonActiveRef.current) {
+        map.getCanvas().style.cursor = "pointer";
+      }
+    };
+
+    const handleLearningRegionLeave = () => {
+      if (journeySelectionModeRef.current && !lessonActiveRef.current) {
+        map.getCanvas().style.cursor = "";
+      }
+    };
+
+    map.on("click", LEARNING_REGIONS_FILL_LAYER, handleLearningRegionClick);
+    map.on("mousemove", LEARNING_REGIONS_FILL_LAYER, handleLearningRegionMove);
+    map.on("mouseleave", LEARNING_REGIONS_FILL_LAYER, handleLearningRegionLeave);
+
+    return () => {
+      map.off("click", LEARNING_REGIONS_FILL_LAYER, handleLearningRegionClick);
+      map.off("mousemove", LEARNING_REGIONS_FILL_LAYER, handleLearningRegionMove);
+      map.off("mouseleave", LEARNING_REGIONS_FILL_LAYER, handleLearningRegionLeave);
+    };
+  }, [isJourneySelectionMode, setFeatureHover, styleReady]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+
+    clearLearningRegionMarkers();
+    if (!map || !isJourneySelectionMode) {
+      return;
+    }
+
+    const markers = JOURNEY_GROUPING_LAYER.groups.map((group) => {
+      const element = document.createElement("button");
+      const isSelected = selectedGroupId === group.id;
+
+      element.type = "button";
+      element.className = styles.regionMarker;
+      element.textContent = group.name;
+      element.dataset.selected = String(isSelected);
+      element.dataset.muted = String(Boolean(selectedGroupId && !isSelected));
+      element.style.setProperty("--region-color", group.color);
+      element.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setSelectedGroupId(group.id);
+      });
+
+      const marker = new maplibregl.Marker({
+        anchor: "center",
+        element,
+        opacityWhenCovered: 0.86,
+      })
+        .setLngLat([...group.labelCoordinates] as [number, number])
+        .addTo(map);
+      element.setAttribute("aria-label", group.name);
+
+      return { marker, element, group };
+    });
+
+    learningRegionMarkersRef.current = markers;
+
+    const updateLabelDensity = () => {
+      const zoom = map.getZoom();
+
+      markers.forEach(({ element, group }) => {
+        const minZoom = group.labelMinZoom ?? 1.35;
+        const hiddenForDensity = zoom < minZoom && selectedGroupId !== group.id;
+
+        element.hidden = hiddenForDensity;
+        element.dataset.compact = String(zoom < 2.05);
+      });
+    };
+
+    updateLabelDensity();
+    map.on("zoom", updateLabelDensity);
+
+    return () => {
+      map.off("zoom", updateLabelDensity);
+      markers.forEach(({ marker }) => marker.remove());
+      if (learningRegionMarkersRef.current === markers) {
+        learningRegionMarkersRef.current = [];
+      }
+    };
+  }, [clearLearningRegionMarkers, isJourneySelectionMode, selectedGroupId]);
+
+  useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) {
       return;
     }
 
-    const map = new maplibregl.Map({
-      container: mapContainerRef.current,
-      style: EXPERIMENT_STYLE,
-      center: INITIAL_CENTER,
-      zoom: INITIAL_ZOOM,
-      pitch: MODE_LOOKUP[DEFAULT_MAP_MODE].pitch,
-      bearing: MODE_LOOKUP[DEFAULT_MAP_MODE].bearing,
-      attributionControl: false,
-      maxPitch: 85,
-      maxZoom: 18,
-      renderWorldCopies: true,
-      fadeDuration: 180,
-    });
+    setMapError(null);
+
+    let map: Map;
+    try {
+      map = new maplibregl.Map({
+        container: mapContainerRef.current,
+        style: EXPERIMENT_STYLE,
+        center: INITIAL_CENTER,
+        zoom: INITIAL_ZOOM,
+        pitch: MODE_LOOKUP[DEFAULT_MAP_MODE].pitch,
+        bearing: MODE_LOOKUP[DEFAULT_MAP_MODE].bearing,
+        attributionControl: false,
+        maxPitch: 85,
+        maxZoom: 18,
+        renderWorldCopies: true,
+        fadeDuration: 180,
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "MapLibre failed to start.";
+      window.setTimeout(() => setMapError(message), 0);
+      return;
+    }
 
     map.addControl(
       new maplibregl.NavigationControl({
@@ -1217,7 +1620,7 @@ export function MapLibreSandbox() {
     map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
 
     const handleCountryMove = (event: MapLayerMouseEvent) => {
-      if (lessonActiveRef.current) {
+      if (lessonActiveRef.current || journeySelectionModeRef.current) {
         return;
       }
 
@@ -1257,7 +1660,7 @@ export function MapLibreSandbox() {
     };
 
     const handleCountryClick = (event: MapLayerMouseEvent) => {
-      if (lessonActiveRef.current) {
+      if (lessonActiveRef.current || journeySelectionModeRef.current) {
         return;
       }
 
@@ -1276,7 +1679,7 @@ export function MapLibreSandbox() {
     };
 
     const handleMapClick = (event: maplibregl.MapMouseEvent) => {
-      if (lessonActiveRef.current) {
+      if (lessonActiveRef.current || journeySelectionModeRef.current) {
         return;
       }
 
@@ -1310,6 +1713,15 @@ export function MapLibreSandbox() {
       setStyleReady(true);
       syncCamera();
       updateVisibleFeatureCount();
+    };
+
+    const handleStyleData = () => {
+      if (!map.getLayer(INTERACTION_LAYER)) {
+        return;
+      }
+
+      setStyleReady(true);
+      syncCamera();
     };
 
     const handleMove = () => {
@@ -1348,10 +1760,15 @@ export function MapLibreSandbox() {
 
     map.on("move", handleMove);
     map.on("load", handleLoad);
+    map.on("styledata", handleStyleData);
     map.on("moveend", updateVisibleFeatureCount);
     map.on("idle", updateVisibleFeatureCount);
     map.on("sourcedata", handleSourceData);
     map.on("render", handleRender);
+    map.on("error", (event) => {
+      const error = event.error;
+      setMapError(error instanceof Error ? error.message : "MapLibre reported a map error.");
+    });
     map.on("click", handleMapClick);
     map.on("mousemove", INTERACTION_LAYER, handleCountryMove);
     map.on("mouseleave", INTERACTION_LAYER, handleCountryLeave);
@@ -1362,12 +1779,14 @@ export function MapLibreSandbox() {
     return () => {
       setStyleReady(false);
       clearCinematicTimers();
+      clearLearningRegionMarkers();
       map.remove();
       mapRef.current = null;
     };
   }, [
     beginCountryIntro,
     clearCinematicTimers,
+    clearLearningRegionMarkers,
     setFeatureHover,
     syncCamera,
     updateVisibleFeatureCount,
@@ -1465,6 +1884,13 @@ export function MapLibreSandbox() {
     >
       <div ref={mapContainerRef} className="h-full w-full" />
 
+      {mapError ? (
+        <div className="absolute inset-x-4 top-20 z-20 rounded-md border border-red-300/30 bg-[#111820]/92 p-4 text-sm text-red-50 shadow-2xl backdrop-blur sm:inset-x-auto sm:left-4 sm:w-[min(26rem,calc(100vw-2rem))]">
+          <p className="font-semibold">Map failed to start</p>
+          <p className="mt-2 leading-6 text-red-100/85">{mapError}</p>
+        </div>
+      ) : null}
+
       {r3fPreset !== "off" ? (
         <Suspense fallback={null}>
           <LazyR3FOverlay
@@ -1495,16 +1921,30 @@ export function MapLibreSandbox() {
         onClose={handleCloseLesson}
       />
 
-      {!settingsOpen && !cinematicCountry ? (
-        <button
-          type="button"
-          onClick={() => setSettingsOpen(true)}
-          className="absolute left-[5.35rem] top-4 z-20 h-9 rounded-md border border-white/15 bg-[#111820]/88 px-3 text-sm font-semibold shadow-2xl backdrop-blur transition hover:border-[#f4d35e]/55 hover:bg-white/12 focus:outline-none focus:ring-2 focus:ring-[#f4d35e]/45 max-[460px]:left-20 max-[460px]:top-3"
-          aria-controls="maplibre-sandbox-settings"
-          aria-expanded={settingsOpen}
-        >
-          Settings
-        </button>
+      {!cinematicCountry ? (
+        <div className={styles.topControls}>
+          {!settingsOpen ? (
+            <button
+              type="button"
+              onClick={() => setSettingsOpen(true)}
+              className={styles.settingsButton}
+              aria-controls="maplibre-sandbox-settings"
+              aria-expanded={settingsOpen}
+            >
+              Settings
+            </button>
+          ) : null}
+
+          <button
+            type="button"
+            onClick={handleStartJourney}
+            className={styles.journeyButton}
+            data-active={isJourneySelectionMode}
+            aria-pressed={isJourneySelectionMode}
+          >
+            Start Journey
+          </button>
+        </div>
       ) : null}
 
       {settingsOpen && !cinematicCountry ? (
@@ -1755,7 +2195,22 @@ export function MapLibreSandbox() {
       </section>
       ) : null}
 
-      {!cinematicCountry ? (
+      {!cinematicCountry && isJourneySelectionMode ? (
+        <section className={styles.journeyPanel} data-selected={Boolean(selectedJourneyGroup)}>
+          {selectedJourneyGroup ? (
+            <>
+              <p className={styles.journeyKicker}>Selected region</p>
+              <h2 className={styles.journeyTitle}>{selectedJourneyGroup.name}</h2>
+            </>
+          ) : (
+            <p className={styles.journeyInstruction}>
+              Move around the map and choose a region to explore.
+            </p>
+          )}
+        </section>
+      ) : null}
+
+      {!cinematicCountry && !isJourneySelectionMode ? (
       <section className="absolute bottom-4 left-4 z-10 w-[min(24rem,calc(100vw-2rem))] rounded-md border border-white/15 bg-[#111820]/88 p-4 text-sm shadow-2xl backdrop-blur">
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">

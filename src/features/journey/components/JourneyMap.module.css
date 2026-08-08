@@ -1,0 +1,2467 @@
+.journeyRoot {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: 100dvh;
+  min-height: 40rem;
+  overflow: hidden;
+  background: #02070b;
+  color: #ffffff;
+}
+
+.mapCanvas {
+  position: absolute;
+  inset: 0;
+}
+
+.journeyRoot :global(.maplibregl-ctrl-bottom-left),
+.journeyRoot :global(.maplibregl-ctrl-logo) {
+  display: none;
+}
+
+.journeyRoot[data-mode="country-intro"] :global(.maplibregl-ctrl),
+.journeyRoot[data-mode="country-capital"] :global(.maplibregl-ctrl),
+.journeyRoot[data-mode="country-flag"] :global(.maplibregl-ctrl),
+.journeyRoot[data-mode="country-transition"] :global(.maplibregl-ctrl) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.regionLabel:focus-visible,
+.primaryCta:focus-visible,
+.changeModeButton:focus-visible,
+.countryClose:focus-visible,
+.countryNavButton:focus-visible,
+.countryNavPrev:focus-visible,
+.countryNavNext:focus-visible,
+.transitionClose:focus-visible,
+.transitionPrimaryButton:focus-visible,
+.transitionSecondaryButton:focus-visible {
+  outline: 3px solid rgb(34 224 198 / 0.34);
+  outline-offset: 3px;
+}
+
+.flagColorButton:focus-visible {
+  outline: 3px solid rgb(34 224 198 / 0.42);
+  outline-offset: 3px;
+}
+
+.regionLabel {
+  --journey-region-color: #22e0c6;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  width: max-content;
+  max-width: 8.8rem;
+  border: 1px solid color-mix(in srgb, var(--journey-region-color) 58%, transparent);
+  border-radius: 7px;
+  background: rgb(4 17 22 / 0.62);
+  padding: 0.28rem 0.42rem 0.28rem 0.52rem;
+  color: rgb(244 252 252 / 0.94);
+  font: 800 0.64rem/1.12 var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0;
+  text-align: left;
+  box-shadow:
+    0 10px 24px rgb(0 0 0 / 0.36),
+    0 0 16px color-mix(in srgb, var(--journey-region-color) 14%, transparent);
+  backdrop-filter: blur(14px);
+  cursor: pointer;
+  opacity: 0.86;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+  touch-action: manipulation;
+}
+
+.regionLabelChevron {
+  font-size: 0.78rem;
+  opacity: 0.65;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.regionLabel:hover,
+.regionLabel[data-selected="true"] {
+  border-color: #22e0c6;
+  background: rgb(7 48 55 / 0.82);
+  box-shadow:
+    0 12px 28px rgb(0 0 0 / 0.38),
+    0 0 24px rgb(34 224 198 / 0.28);
+  opacity: 1;
+}
+
+.regionLabel[data-muted="true"] {
+  opacity: 0.38;
+}
+
+.regionLabel[data-selected="true"] {
+  transform: translateY(-1px) scale(1.05);
+}
+
+.regionLabel:global(.maplibregl-marker-covered) {
+  pointer-events: none;
+}
+
+.bottomPanel {
+  position: absolute;
+  right: max(0.75rem, env(safe-area-inset-right));
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  left: max(0.75rem, env(safe-area-inset-left));
+  z-index: 5;
+  border: 1px solid rgb(143 220 226 / 0.26);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgb(8 33 39 / 0.78), rgb(3 11 15 / 0.9)),
+    rgb(6 18 23 / 0.84);
+  color: #ffffff;
+  box-shadow:
+    0 22px 56px rgb(0 0 0 / 0.42),
+    inset 0 1px 0 rgb(255 255 255 / 0.08);
+  backdrop-filter: blur(22px);
+}
+
+.defaultPanel {
+  display: grid;
+  gap: 0.55rem;
+  padding: 1.5rem 1.1rem 1.25rem;
+}
+
+/* Legacy panel text — kept for compat but no longer rendered */
+.selectedTitle,
+.selectedDescription,
+.metricLabel,
+.metricValue {
+  margin: 0;
+}
+
+/* Legacy button — kept for compat but no longer rendered */
+.changeModeButton {
+  display: inline-flex;
+  min-height: 2.7rem;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(255 255 255 / 0.16);
+  border-radius: 14px;
+  background: #071418;
+  color: rgb(255 255 255 / 0.64);
+  font-size: 0.9rem;
+  font-weight: 850;
+  letter-spacing: 0;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+}
+
+.changeModeButton:disabled {
+  border-color: rgb(255 255 255 / 0.11);
+  background: #050f12;
+  color: rgb(255 255 255 / 0.42);
+  cursor: not-allowed;
+}
+
+.panelHandle {
+  position: absolute;
+  top: 0.62rem;
+  left: 50%;
+  width: 4.1rem;
+  height: 0.25rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.28);
+  transform: translateX(-50%);
+}
+
+.selectedPanel {
+  display: grid;
+  gap: 0.82rem;
+  padding: 1.5rem 1.1rem 1.1rem;
+  max-height: calc(100dvh - 4.5rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.selectedTitle {
+  overflow-wrap: anywhere;
+  font-size: clamp(1.55rem, 8vw, 2.25rem);
+  font-weight: 900;
+  line-height: 1.05;
+}
+
+.selectedDescription {
+  color: rgb(234 250 250 / 0.9);
+  font-size: 0.96rem;
+  line-height: 1.45;
+}
+
+.regionMetric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 3.35rem;
+  border-top: 1px solid rgb(255 255 255 / 0.1);
+  border-bottom: 1px solid rgb(255 255 255 / 0.08);
+  color: rgb(234 250 250 / 0.9);
+}
+
+.metricLabel {
+  font-size: 0.86rem;
+  font-weight: 650;
+}
+
+.metricValue {
+  font-size: 0.95rem;
+  font-weight: 850;
+}
+
+.primaryCta {
+  display: flex;
+  min-height: 3.6rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.62rem;
+  padding-inline: 1.1rem;
+  border: 1px solid rgb(151 255 246 / 0.64);
+  border-radius: 15px;
+  background:
+    linear-gradient(135deg, rgb(125 233 235 / 0.35), rgb(0 133 121 / 0.72)),
+    rgb(8 116 111 / 0.78);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-align: left;
+  box-shadow:
+    0 15px 36px rgb(0 0 0 / 0.32),
+    0 0 30px rgb(34 224 198 / 0.22);
+  transition:
+    filter 160ms ease,
+    transform 160ms ease,
+    opacity 160ms ease;
+}
+
+.primaryCtaCompass {
+  width: 1.35rem;
+  height: 1.35rem;
+  flex-shrink: 0;
+}
+
+.primaryCtaArrow {
+  margin-left: auto;
+  font-size: 1.25rem;
+  line-height: 1;
+  opacity: 0.85;
+}
+
+.primaryCta:hover {
+  filter: brightness(1.08);
+}
+
+.primaryCta:active {
+  transform: translateY(1px);
+}
+
+.primaryCta:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.25);
+  opacity: 0.54;}
+
+.countryOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding:
+    max(1rem, calc(env(safe-area-inset-top) + 0.35rem))
+    max(1rem, calc(env(safe-area-inset-right) + 0.85rem))
+    max(2rem, calc(env(safe-area-inset-bottom) + 1.15rem))
+    max(1rem, calc(env(safe-area-inset-left) + 0.85rem));
+  pointer-events: none;
+}
+
+.countryOverlay::before,
+.countryOverlay::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+}
+
+.countryOverlay::before {
+  background:
+    linear-gradient(
+      180deg,
+      rgb(0 0 0 / 0.58) 0%,
+      transparent 22%,
+      transparent 42%,
+      rgb(0 0 0 / 0.44) 60%,
+      rgb(0 0 0 / 0.82) 100%
+    );
+}
+
+.countryOverlay::after {
+  background: linear-gradient(90deg, rgb(0 0 0 / 0.08), transparent 22%, transparent 78%, rgb(0 0 0 / 0.08));
+}
+
+.countryHeader {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.8rem;
+  align-items: start;
+}
+
+.progressGroup {
+  display: grid;
+  gap: 0.38rem;
+  min-width: 0;
+}
+
+.progressRail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 0.34rem;
+  min-width: 0;
+  max-width: 22rem;
+}
+
+.progressSegment {
+  display: block;
+  height: 0.27rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.2);
+}
+
+.progressSegment i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: rgb(34 224 198 / 0.92);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.progressSegment[data-state="complete"] i,
+.progressSegment[data-state="active"] i {
+  transform: scaleX(1);
+}
+
+.progressSegment[data-state="active"] {
+  box-shadow: 0 0 16px rgb(34 224 198 / 0.42);
+}
+
+.progressText {
+  margin: 0;
+  color: rgb(255 255 255 / 0.96);
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-shadow: 0 6px 18px rgb(0 0 0 / 0.6);
+}
+
+.countryClose {
+  position: relative;
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 0.28);
+  border-radius: 999px;
+  background: rgb(2 8 12 / 0.42);
+  box-shadow: 0 12px 28px rgb(0 0 0 / 0.28);
+  backdrop-filter: blur(16px);
+  pointer-events: auto;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.countryClose:hover {
+  border-color: rgb(255 255 255 / 0.42);
+  background: rgb(6 24 29 / 0.62);
+}
+
+.countryClose:active {
+  transform: translateY(1px);
+}
+
+.countryClose span {
+  position: absolute;
+  width: 1.05rem;
+  height: 0.12rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.9);
+}
+
+.countryClose span:first-child {
+  transform: rotate(45deg);
+}
+
+.countryClose span:last-child {
+  transform: rotate(-45deg);
+}
+
+.countryStage {
+  display: grid;
+  align-items: end;
+  justify-items: center;
+  min-height: 0;
+  padding-inline: 0.25rem;
+  padding-bottom: clamp(4rem, 13vh, 7rem);
+  text-align: center;
+}
+
+.countryTitleStack {
+  display: grid;
+  justify-items: center;
+  gap: 0.65rem;
+  width: min(100%, 36rem);
+}
+
+.countryName {
+  margin: 0;
+  overflow-wrap: anywhere;
+  max-width: min(9.6em, calc(100vw - 2rem));
+  font-size: clamp(2.45rem, 11.6vw, 5.35rem);
+  font-weight: 950;
+  line-height: 0.97;
+  text-wrap: balance;
+  text-shadow: 0 10px 36px rgb(0 0 0 / 0.68);
+}
+
+.countryIntroLine {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: rgb(237 251 250 / 0.9);
+  font-size: clamp(0.9rem, 3.4vw, 1.1rem);
+  font-weight: 700;
+  line-height: 1.38;
+  text-wrap: balance;
+}
+
+/* Legacy — no longer rendered in current component */
+.countryIdentity {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.48rem;
+  min-height: 2.35rem;
+  max-width: min(100%, 22rem);
+  border: 1px solid rgb(255 255 255 / 0.2);
+  border-radius: 999px;
+  background: rgb(2 10 14 / 0.58);
+  padding: 0.28rem 0.72rem 0.28rem 0.32rem;
+  color: rgb(242 252 252 / 0.86);
+  font-size: 0.74rem;
+  font-weight: 850;
+  letter-spacing: 0;
+  box-shadow: 0 16px 36px rgb(0 0 0 / 0.34);
+  backdrop-filter: blur(16px);
+}
+
+.countryIdentity span + span::before {
+  margin-right: 0.48rem;
+  color: rgb(34 224 198 / 0.88);
+  content: "/";
+}
+
+/* Legacy — no longer rendered in current component */
+.countryFlag {
+  width: 2.7rem;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow:
+    0 8px 18px rgb(0 0 0 / 0.28),
+    0 0 0 1px rgb(255 255 255 / 0.45);
+  object-fit: contain;
+}
+
+.countryFooter {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: 0.65rem;
+  pointer-events: auto;
+}
+
+/* Legacy — kept for compatibility but no longer rendered */
+.countryNavButton {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  border-radius: 999px;
+  background: rgb(3 14 18 / 0.64);
+  color: rgb(255 255 255 / 0.92);
+  font-size: 0.86rem;
+  font-weight: 850;
+  letter-spacing: 0;
+  text-align: center;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 14px 30px rgb(0 0 0 / 0.28);
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+/* Previous button — outlined ghost */
+.countryNavPrev {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.48rem;
+  min-width: 0;
+  border: 1px solid rgb(255 255 255 / 0.22);
+  border-radius: 999px;
+  background: rgb(3 14 18 / 0.68);
+  color: rgb(255 255 255 / 0.9);
+  font-size: 0.88rem;
+  font-weight: 850;
+  letter-spacing: 0;
+  backdrop-filter: blur(16px);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.07);
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.countryNavPrev:hover:not(:disabled) {
+  border-color: rgb(255 255 255 / 0.38);
+  background: rgb(8 28 34 / 0.74);
+}
+
+.countryNavPrev:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.countryNavPrev:disabled {
+  cursor: default;
+  opacity: 0.3;
+}
+
+/* Next button — teal filled */
+.countryNavNext {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.48rem;
+  min-width: 0;
+  border: 1px solid rgb(124 255 248 / 0.72);
+  border-radius: 999px;
+  background: linear-gradient(135deg, #1ce8ef, #13ddd7);
+  color: #031014;
+  font-size: 0.88rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  box-shadow:
+    0 14px 32px rgb(0 0 0 / 0.3),
+    0 0 28px rgb(34 224 198 / 0.26);
+  transition:
+    filter 160ms ease,
+    transform 160ms ease;
+}
+
+.countryNavNext:hover {
+  filter: brightness(1.08);
+}
+
+.countryNavNext:active {
+  transform: translateY(1px);
+}
+
+/* Chevron arrows inside nav buttons */
+.navChevron {
+  display: block;
+  flex-shrink: 0;
+  width: 0.52rem;
+  height: 0.52rem;
+  border-top: 0.16rem solid currentColor;
+  border-right: 0.16rem solid currentColor;
+}
+
+.navChevron[data-direction="next"] {
+  transform: rotate(45deg);
+}
+
+.navChevron[data-direction="prev"] {
+  transform: rotate(-135deg);
+}
+
+/* ─── Country intro overlay — map area ─────────────────────────────────── */
+
+.countryMapArea {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding-bottom: 1.35rem;
+  pointer-events: none;
+}
+
+/* ─── Country intro overlay — info panel ────────────────────────────────── */
+
+.countryInfoPanel {
+  display: grid;
+  gap: 0.72rem;
+  pointer-events: none;
+}
+
+.countryNameBlock {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.countrySubtitle {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.38rem;
+  color: rgb(185 215 215 / 0.88);
+  font-size: clamp(0.88rem, 3.4vw, 1.08rem);
+  font-weight: 600;
+  line-height: 1.3;
+  text-shadow: 0 6px 18px rgb(0 0 0 / 0.55);
+}
+
+.subtitleDot {
+  color: rgb(200 225 225 / 0.45);
+  font-weight: 400;
+}
+
+.islandTag {
+  color: #22e0c6;
+  font-weight: 760;
+}
+
+/* Flag + capital meta card */
+.countryMetaCard {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 18px;
+  background: rgb(3 14 20 / 0.66);
+  overflow: hidden;
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 18px 40px rgb(0 0 0 / 0.34),
+    inset 0 1px 0 rgb(255 255 255 / 0.08);
+  pointer-events: auto;
+}
+
+.metaFlagWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 1.15rem;
+}
+
+.countryFlagLarge {
+  width: clamp(4.2rem, 13vw, 6.2rem);
+  height: auto;
+  aspect-ratio: 3 / 2;
+  border-radius: 8px;
+  background: #fff;
+  object-fit: contain;
+  box-shadow:
+    0 8px 20px rgb(0 0 0 / 0.34),
+    0 0 0 1px rgb(255 255 255 / 0.38);
+}
+
+.metaCardDivider {
+  display: block;
+  width: 1px;
+  align-self: stretch;
+  background: rgb(255 255 255 / 0.13);
+}
+
+.metaCapitalWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.58rem;
+  padding: 0.85rem 1.15rem;
+  color: rgb(240 252 252 / 0.94);
+  font-size: clamp(0.88rem, 3.4vw, 1.16rem);
+  font-weight: 750;
+  overflow: hidden;
+}
+
+.metaCapitalWrap span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.capitalIcon {
+  width: 1.3rem;
+  height: 1.3rem;
+  flex-shrink: 0;
+  color: rgb(34 224 198 / 0.9);
+}
+
+/* Description card */
+.countryDescCard {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.9rem;
+  border: 1px solid rgb(255 255 255 / 0.11);
+  border-radius: 18px;
+  background: rgb(3 14 20 / 0.66);
+  padding: 0.9rem 1rem;
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 14px 32px rgb(0 0 0 / 0.3),
+    inset 0 1px 0 rgb(255 255 255 / 0.07);
+  pointer-events: auto;
+}
+
+.descCardIcon {
+  display: grid;
+  width: 2.65rem;
+  height: 2.65rem;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid rgb(34 224 198 / 0.38);
+  border-radius: 999px;
+  color: #22e0c6;
+  box-shadow:
+    inset 0 0 14px rgb(34 224 198 / 0.1),
+    0 0 14px rgb(34 224 198 / 0.14);
+}
+
+.islandIcon {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+.transitionOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding:
+    max(1rem, calc(env(safe-area-inset-top) + 0.35rem))
+    max(1rem, calc(env(safe-area-inset-right) + 0.85rem))
+    max(2rem, calc(env(safe-area-inset-bottom) + 1.15rem))
+    max(1rem, calc(env(safe-area-inset-left) + 0.85rem));
+  pointer-events: none;
+}
+
+.transitionOverlay::before,
+.transitionOverlay::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+}
+
+.transitionOverlay::before {
+  background:
+    linear-gradient(
+      180deg,
+      rgb(0 0 0 / 0.58) 0%,
+      transparent 22%,
+      transparent 42%,
+      rgb(0 0 0 / 0.44) 60%,
+      rgb(0 0 0 / 0.82) 100%
+    );
+}
+
+.transitionOverlay::after {
+  background: linear-gradient(90deg, rgb(0 0 0 / 0.08), transparent 22%, transparent 78%, rgb(0 0 0 / 0.08));
+}
+
+.transitionHeader {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.8rem;
+  align-items: start;
+}
+
+/* transitionProgressGroup — superseded by shared .progressGroup */
+.transitionProgressGroup {
+  display: grid;
+  gap: 0.38rem;
+  min-width: 0;
+}
+
+/* transitionProgressText — superseded by shared .progressText */
+.transitionProgressText {
+  margin: 0;
+  color: rgb(255 255 255 / 0.96);
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-shadow: 0 6px 18px rgb(0 0 0 / 0.6);
+}
+
+.transitionProgressRail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 0.34rem;
+  min-width: 0;
+  max-width: 22rem;
+}
+
+.transitionClose {
+  position: relative;
+  display: grid;
+  width: clamp(3.6rem, 13vw, 5.4rem);
+  height: clamp(3.6rem, 13vw, 5.4rem);
+  place-items: center;
+  border: 1px solid rgb(255 235 219 / 0.88);
+  border-radius: 999px;
+  background: rgb(2 8 12 / 0.36);
+  box-shadow:
+    0 18px 38px rgb(0 0 0 / 0.32),
+    inset 0 1px 0 rgb(255 255 255 / 0.08);
+  backdrop-filter: blur(18px);
+  pointer-events: auto;
+  transition:
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.transitionClose:hover {
+  background: rgb(8 28 32 / 0.64);
+}
+
+.transitionClose:active {
+  transform: translateY(1px);
+}
+
+.transitionClose span {
+  position: absolute;
+  width: 36%;
+  height: 0.22rem;
+  border-radius: 999px;
+  background: #ffffff;
+}
+
+.transitionClose span:first-child {
+  transform: rotate(45deg);
+}
+
+.transitionClose span:last-child {
+  transform: rotate(-45deg);
+}
+
+.transitionMapSpace {
+  /* Height controlled by the 1fr grid row — transparent map area */
+  min-height: 0;
+}
+
+/* ─── Transition info panel (replaces sheet) ─────────────────────────────── */
+
+.transitionInfoPanel {
+  display: grid;
+  gap: 0.72rem;
+  pointer-events: auto;
+}
+
+.transitionTitleBlock {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.transitionTitle {
+  margin: 0;
+  overflow-wrap: anywhere;
+  max-width: min(9.6em, calc(100vw - 2rem));
+  color: #ffffff;
+  font-size: clamp(2.45rem, 11.6vw, 5.35rem);
+  font-weight: 950;
+  line-height: 0.97;
+  text-wrap: balance;
+  text-shadow: 0 10px 36px rgb(0 0 0 / 0.68);
+}
+
+.transitionSubtitle {
+  margin: 0;
+  color: rgb(185 215 215 / 0.88);
+  font-size: clamp(0.88rem, 3.4vw, 1.08rem);
+  font-weight: 600;
+  line-height: 1.3;
+  text-shadow: 0 6px 18px rgb(0 0 0 / 0.55);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* Legacy bottom-sheet panel — no longer rendered */
+.transitionPanel {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: clamp(0.62rem, 1.8vw, 0.95rem);
+  width: min(100%, 56rem);
+  max-height: calc(100dvh - 6.2rem);
+  margin-inline: auto;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid rgb(34 224 198 / 0.48);
+  border-radius: clamp(1.4rem, 4.8vw, 2.45rem);
+  background:
+    linear-gradient(180deg, rgb(4 34 40 / 0.9), rgb(2 17 22 / 0.96)),
+    rgb(3 19 24 / 0.94);
+  padding: clamp(1.85rem, 4vw, 2.6rem) clamp(0.82rem, 3vw, 1.7rem) clamp(0.82rem, 3vw, 1.25rem);
+  box-shadow:
+    0 28px 74px rgb(0 0 0 / 0.48),
+    inset 0 1px 0 rgb(255 255 255 / 0.09),
+    0 0 42px rgb(34 224 198 / 0.13);
+  backdrop-filter: blur(24px);
+  pointer-events: auto;
+}
+
+.transitionPanel .panelHandle {
+  top: 0.82rem;
+  width: 4.2rem;
+  height: 0.32rem;
+  background: rgb(170 247 247 / 0.62);
+  box-shadow: 0 0 18px rgb(34 224 198 / 0.28);
+}
+
+.transitionTitleRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(0.9rem, 3vw, 1.4rem);
+  align-items: center;
+}
+
+.transitionCompass {
+  width: clamp(2.9rem, 8vw, 4.6rem);
+  color: #22e0c6;
+  filter: drop-shadow(0 0 16px rgb(34 224 198 / 0.42));
+}
+
+.transitionCompass path,
+.transitionCompass circle,
+.transitionInfoIcon svg,
+.transitionInsightIcon svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.4;
+}
+
+.transitionFlagStack p,
+.transitionInfoCard h2,
+.transitionInfoCard p,
+.transitionInsight p {
+  margin: 0;
+}
+
+.transitionFlagCard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(4.5rem, 0.6fr) minmax(0, 1fr);
+  gap: clamp(0.5rem, 2vw, 1.1rem);
+  align-items: center;
+  border: 1px solid rgb(34 224 198 / 0.38);
+  border-radius: 18px;
+  background: rgb(2 14 20 / 0.66);
+  padding: clamp(0.85rem, 2.4vw, 1.15rem) clamp(0.75rem, 2vw, 1.15rem);
+  box-shadow:
+    0 18px 40px rgb(0 0 0 / 0.32),
+    inset 0 1px 0 rgb(255 255 255 / 0.07);
+  backdrop-filter: blur(18px);
+}
+
+.transitionFlagStack {
+  display: grid;
+  justify-items: center;
+  gap: 0.58rem;
+  min-width: 0;
+  text-align: center;
+}
+
+.transitionFlag {
+  width: clamp(4.2rem, 13vw, 6.2rem);
+  height: auto;
+  aspect-ratio: 3 / 2;
+  border-radius: 8px;
+  background: rgb(255 255 255 / 0.96);
+  object-fit: cover;
+  box-shadow:
+    0 10px 22px rgb(0 0 0 / 0.34),
+    0 0 0 1px rgb(255 255 255 / 0.32);
+}
+
+.transitionFlagStack p {
+  overflow-wrap: anywhere;
+  color: rgb(255 255 255 / 0.9);
+  font-size: clamp(0.88rem, 3vw, 1.18rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.transitionFlagRoute {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: 3rem;
+  align-items: center;
+}
+
+.transitionFlagRoute::before {
+  display: block;
+  width: calc(100% - 1.2rem);
+  height: 0.55rem;
+  border-radius: 999px;
+  background-image: radial-gradient(circle, #22e0c6 0 0.2rem, transparent 0.24rem);
+  background-position: left center;
+  background-repeat: repeat-x;
+  background-size: 1.18rem 100%;
+  filter: drop-shadow(0 0 10px rgb(34 224 198 / 0.4));
+  content: "";
+}
+
+.transitionFlagRoute span {
+  position: absolute;
+  right: 0.12rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-top: 0.32rem solid #22e0c6;
+  border-right: 0.32rem solid #22e0c6;
+  filter: drop-shadow(0 0 10px rgb(34 224 198 / 0.5));
+  transform: rotate(45deg);
+}
+
+.transitionInfluenceGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.62rem;
+}
+
+.transitionInfoCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.58rem;
+  min-width: 0;
+  min-height: 5.4rem;
+  border: 1px solid rgb(34 224 198 / 0.3);
+  border-radius: 18px;
+  background: rgb(2 14 20 / 0.62);
+  padding: 0.9rem 0.75rem;
+  text-align: center;
+  box-shadow:
+    0 14px 30px rgb(0 0 0 / 0.28),
+    inset 0 1px 0 rgb(255 255 255 / 0.06);
+  backdrop-filter: blur(16px);
+}
+
+.transitionInfoIcon {
+  display: grid;
+  width: clamp(2.6rem, 7.5vw, 3.4rem);
+  aspect-ratio: 1;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid #22e0c6;
+  border-radius: 999px;
+  color: #22e0c6;
+  box-shadow:
+    inset 0 0 16px rgb(34 224 198 / 0.12),
+    0 0 16px rgb(34 224 198 / 0.18);
+}
+
+.transitionInfoIcon svg {
+  width: 56%;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.4;
+}
+
+.transitionInfoLabel {
+  overflow-wrap: anywhere;
+  color: #22e0c6;
+  font-size: clamp(0.82rem, 2.8vw, 1rem);
+  font-weight: 760;
+  line-height: 1.2;
+}
+
+.transitionCenterArrow {
+  display: none;
+}
+
+.transitionInsight {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: center;
+  min-height: 4.5rem;
+  border: 1px solid rgb(34 224 198 / 0.3);
+  border-radius: 18px;
+  background: rgb(2 14 20 / 0.62);
+  padding: 0.9rem 1rem;
+  box-shadow:
+    0 14px 30px rgb(0 0 0 / 0.26),
+    inset 0 1px 0 rgb(255 255 255 / 0.06);
+  backdrop-filter: blur(16px);
+}
+
+.transitionInsightIcon {
+  display: grid;
+  width: clamp(2.6rem, 7.5vw, 3.4rem);
+  aspect-ratio: 1;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid #22e0c6;
+  border-radius: 999px;
+  color: #22e0c6;
+  box-shadow:
+    inset 0 0 16px rgb(34 224 198 / 0.12),
+    0 0 16px rgb(34 224 198 / 0.18);
+}
+
+.transitionInsightIcon svg {
+  width: 66%;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.4;
+}
+
+.transitionInsight p {
+  margin: 0;
+  color: rgb(240 252 250 / 0.94);
+  font-size: clamp(0.88rem, 2.8vw, 1.06rem);
+  font-weight: 600;
+  line-height: 1.4;
+  text-wrap: balance;
+}
+
+.transitionFooter {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: clamp(0.55rem, 2vw, 1.2rem);
+  align-items: center;
+}
+
+.transitionPrimaryButton,
+.transitionSecondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  min-height: 3.65rem;
+  min-width: 0;
+  border-radius: 999px;
+  font-size: clamp(0.92rem, 2.8vw, 1.18rem);
+  font-weight: 900;
+  letter-spacing: 0;
+  transition:
+    filter 160ms ease,
+    transform 160ms ease,
+    background 160ms ease;
+}
+
+.transitionPrimaryButton {
+  border: 1px solid rgb(124 255 248 / 0.7);
+  background:
+    linear-gradient(135deg, #1ce8ef, #13ddd7),
+    #22e0c6;
+  color: #031014;
+  box-shadow:
+    0 16px 36px rgb(0 0 0 / 0.34),
+    0 0 30px rgb(34 224 198 / 0.28);
+}
+
+.transitionSecondaryButton {
+  border: 1px solid rgb(34 224 198 / 0.34);
+  background: rgb(2 16 21 / 0.72);
+  color: #ffffff;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06);
+}
+
+.transitionPrimaryButton:hover,
+.transitionSecondaryButton:hover {
+  filter: brightness(1.07);
+}
+
+.transitionPrimaryButton:active,
+.transitionSecondaryButton:active {
+  transform: translateY(1px);
+}
+
+.transitionButtonArrow {
+  display: block;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-top: 0.18rem solid currentColor;
+  border-right: 0.18rem solid currentColor;
+  transform: rotate(45deg);
+}
+
+.transitionButtonArrow[data-direction="previous"] {
+  transform: rotate(-135deg);
+}
+
+.transitionPager {
+  display: flex;
+  justify-content: center;
+  gap: 0.48rem;
+  min-width: 0;
+}
+
+.transitionPager span {
+  width: 0.56rem;
+  height: 0.56rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.24);
+}
+
+.transitionPager span[data-active="true"] {
+  background: #22e0c6;
+  box-shadow: 0 0 16px rgb(34 224 198 / 0.46);
+}
+
+.transitionMapCallout,
+.transitionRouteArrowMarker {
+  pointer-events: none;
+}
+
+.transitionMapCallout {
+  display: grid;
+  justify-items: center;
+  transform: translateY(0);
+}
+
+.transitionMapCalloutCard {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.62rem;
+  max-width: min(16rem, 44vw);
+  border: 1px solid rgb(34 224 198 / 0.88);
+  border-radius: 999px;
+  background: rgb(2 14 19 / 0.78);
+  padding: 0.52rem 0.9rem;
+  color: #ffffff;
+  font-size: clamp(0.88rem, 3vw, 1.25rem);
+  font-weight: 650;
+  line-height: 1.12;
+  text-align: center;
+  box-shadow:
+    0 14px 32px rgb(0 0 0 / 0.42),
+    0 0 22px rgb(34 224 198 / 0.24),
+    inset 0 1px 0 rgb(255 255 255 / 0.08);
+  backdrop-filter: blur(18px);
+}
+
+.transitionMapCalloutCard img {
+  width: 2.2rem;
+  height: 1.45rem;
+  flex: 0 0 auto;
+  border-radius: 4px;
+  background: #ffffff;
+  object-fit: cover;
+}
+
+.transitionMapCalloutCard span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.transitionMapCalloutStem {
+  width: 1px;
+  height: clamp(2.4rem, 9vw, 4.4rem);
+  background: #22e0c6;
+  box-shadow: 0 0 14px rgb(34 224 198 / 0.62);
+}
+
+.transitionRouteArrowMarker {
+  --route-arrow-rotation: 0deg;
+
+  display: grid;
+  width: 3.4rem;
+  height: 3.4rem;
+  place-items: center;
+}
+
+.transitionRouteArrowMarker span {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  border-top: 0.38rem solid #22e0c6;
+  border-right: 0.38rem solid #22e0c6;
+  filter:
+    drop-shadow(0 0 8px rgb(34 224 198 / 0.9))
+    drop-shadow(0 0 18px rgb(34 224 198 / 0.52));
+  transform: rotate(calc(var(--route-arrow-rotation) + 45deg));
+}
+
+@media (min-width: 700px) {
+  .journeyRoot {
+    min-height: 44rem;
+  }
+
+  .bottomPanel {
+    right: 1.5rem;
+    bottom: 1.5rem;
+    left: auto;
+    width: min(30rem, calc(100vw - 3rem));
+    border-radius: 20px;
+  }
+
+  .selectedPanel {
+    max-height: calc(100dvh - 5rem);
+  }
+
+  .regionLabel {
+    max-width: 10rem;
+    padding: 0.34rem 0.64rem;
+    font-size: 0.74rem;
+  }
+
+  .countryOverlay {
+    padding: 1.4rem 1.8rem 1.8rem;
+  }
+
+  .countryInfoPanel {
+    gap: 0.9rem;
+  }
+
+  .countryName {
+    font-size: clamp(2.9rem, 7vw, 5.35rem);
+  }
+
+  .countryMetaCard {
+    border-radius: 20px;
+  }
+
+  .countryDescCard {
+    border-radius: 20px;
+    padding: 1rem 1.2rem;
+  }
+
+  .transitionOverlay {
+    padding: 1.4rem 1.8rem 1.8rem;
+  }
+
+  .transitionInfoPanel {
+    gap: 0.9rem;
+  }
+
+  .transitionTitle {
+    font-size: clamp(2.9rem, 7vw, 5.35rem);
+  }
+
+  .transitionFlagCard {
+    border-radius: 20px;
+  }
+
+  .transitionInfoCard,
+  .transitionInsight {
+    border-radius: 20px;
+  }
+
+  .transitionInfluenceGrid {
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 700px) and (max-height: 900px) {
+  .flagTitle {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+  }
+
+  .flagStudyCard {
+    width: min(100%, 48rem);
+    gap: 0.62rem;
+    padding: 0.75rem 0.9rem;
+  }
+
+  .flagStudyImage {
+    max-height: 10.8rem;
+    border-radius: 12px;
+  }
+
+  .flagFactRow {
+    gap: 0.62rem;
+  }
+
+  .flagFactIcon {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .flagFactRow p {
+    font-size: 1rem;
+    line-height: 1.32;
+  }
+
+  .flagInstruction {
+    font-size: 0.95rem;
+  }
+
+  .flagColorGrid {
+    grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+    gap: 0.5rem;
+  }
+
+  .flagColorButton,
+  .flagColorFace {
+    min-height: 2.85rem;
+  }
+
+  .transitionInfoPanel {
+    gap: 0.65rem;
+  }
+
+  .transitionTitle {
+    font-size: clamp(2.3rem, 5vw, 3.5rem);
+  }
+
+  .transitionFlagCard {
+    padding: 0.7rem 0.9rem;
+  }
+
+  .transitionFlag {
+    width: 5rem;
+  }
+
+  .transitionInfoCard {
+    min-height: 4.6rem;
+    padding: 0.75rem 0.65rem;
+  }
+
+  .transitionInsight {
+    min-height: 4rem;
+    padding: 0.75rem 0.9rem;
+  }
+}
+
+/* ─── Capital step ────────────────────────────────────────────────────────── */
+
+.flagTitle {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: clamp(2rem, 8.8vw, 4.6rem);
+  font-weight: 950;
+  line-height: 0.97;
+  text-wrap: balance;
+  text-shadow: 0 10px 36px rgb(0 0 0 / 0.68);
+}
+
+.flagStudyCard {
+  display: grid;
+  gap: clamp(0.8rem, 2.5vw, 1rem);
+  border: 1px solid rgb(34 224 198 / 0.34);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgb(4 26 32 / 0.74), rgb(2 12 17 / 0.9)),
+    rgb(3 14 20 / 0.72);
+  padding: clamp(0.85rem, 2.8vw, 1.35rem);
+  box-shadow:
+    0 18px 44px rgb(0 0 0 / 0.38),
+    inset 0 1px 0 rgb(255 255 255 / 0.08),
+    0 0 30px rgb(34 224 198 / 0.1);
+  backdrop-filter: blur(20px);
+  pointer-events: auto;
+}
+
+.flagStudyImage {
+  width: 100%;
+  max-height: min(31dvh, 22rem);
+  aspect-ratio: 3 / 2;
+  border-radius: 16px;
+  background: #ffffff;
+  object-fit: cover;
+  box-shadow:
+    0 16px 38px rgb(0 0 0 / 0.38),
+    0 0 0 1px rgb(255 255 255 / 0.26);
+}
+
+.flagFactRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.78rem;
+  align-items: center;
+  padding-inline: clamp(0rem, 1.8vw, 0.6rem);
+}
+
+.flagFactRow p,
+.flagInstruction {
+  margin: 0;
+}
+
+.flagFactRow p {
+  color: rgb(248 252 252 / 0.96);
+  font-size: clamp(0.95rem, 3.8vw, 1.32rem);
+  font-weight: 610;
+  line-height: 1.42;
+  text-wrap: balance;
+}
+
+.flagFactIcon {
+  display: grid;
+  width: clamp(2.9rem, 9vw, 4rem);
+  height: clamp(2.9rem, 9vw, 4rem);
+  place-items: center;
+  border: 1px solid rgb(34 224 198 / 0.44);
+  border-radius: 999px;
+  color: #22e0c6;
+  background: rgb(0 238 224 / 0.06);
+  box-shadow:
+    inset 0 0 16px rgb(34 224 198 / 0.1),
+    0 0 16px rgb(34 224 198 / 0.14);
+}
+
+.flagSparkIcon {
+  width: 58%;
+  height: 58%;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.flagInstruction {
+  color: #22e0c6;
+  font-size: clamp(0.88rem, 3.2vw, 1.12rem);
+  font-weight: 820;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.flagColorGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(9rem, 100%), 1fr));
+  gap: 0.6rem;
+}
+
+.flagColorButton {
+  min-width: 0;
+  min-height: 3.25rem;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  padding: 0;
+  color: #ffffff;
+  perspective: 42rem;
+  touch-action: manipulation;
+}
+
+.flagColorButtonInner {
+  position: relative;
+  display: grid;
+  min-height: inherit;
+  transform-style: preserve-3d;
+  transition: transform 420ms cubic-bezier(0.2, 0.72, 0.18, 1);
+}
+
+.flagColorButton[data-revealed="true"] .flagColorButtonInner {
+  transform: rotateY(180deg);
+}
+
+.flagColorFace {
+  grid-area: 1 / 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.62rem;
+  min-width: 0;
+  min-height: 3.25rem;
+  border: 1px solid rgb(34 224 198 / 0.28);
+  border-radius: 16px;
+  background: rgb(2 16 21 / 0.72);
+  padding: 0.72rem 0.86rem;
+  overflow-wrap: anywhere;
+  font-size: clamp(0.9rem, 3vw, 1.04rem);
+  font-weight: 850;
+  line-height: 1.1;
+  backface-visibility: hidden;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.07),
+    0 10px 24px rgb(0 0 0 / 0.22);
+}
+
+.flagColorFace[data-side="back"] {
+  border-color: rgb(34 224 198 / 0.72);
+  background:
+    linear-gradient(135deg, rgb(34 224 198 / 0.25), rgb(5 35 42 / 0.92)),
+    rgb(3 22 28 / 0.9);
+  color: #ffffff;
+  text-shadow: 0 0 16px rgb(34 224 198 / 0.34);
+  transform: rotateY(180deg);
+}
+
+.flagColorButton:hover .flagColorFace {
+  border-color: rgb(34 224 198 / 0.58);
+}
+
+.flagColorSwatch {
+  --flag-swatch: #ffffff;
+
+  width: 1.45rem;
+  height: 1.45rem;
+  flex: 0 0 auto;
+  border: 1px solid rgb(255 255 255 / 0.74);
+  border-radius: 999px;
+  background: var(--flag-swatch);
+  box-shadow:
+    inset 0 0 0 1px rgb(0 0 0 / 0.12),
+    0 0 16px color-mix(in srgb, var(--flag-swatch) 48%, transparent);
+}
+
+.capitalTitle {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: clamp(1.75rem, 8.5vw, 4rem);
+  font-weight: 950;
+  line-height: 0.97;
+  text-wrap: balance;
+  text-shadow: 0 10px 36px rgb(0 0 0 / 0.68);
+}
+
+.capitalMnemonicCard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  border: 1px solid rgb(34 224 198 / 0.26);
+  border-radius: 18px;
+  background: rgb(3 14 20 / 0.66);
+  padding: 0.9rem 1rem;
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 14px 32px rgb(0 0 0 / 0.3),
+    inset 0 1px 0 rgb(255 255 255 / 0.07);
+  pointer-events: auto;
+}
+
+.capitalMnemonicText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.55rem;
+}
+
+.capitalMnemonicText p {
+  margin: 0;
+  color: rgb(240 252 250 / 0.9);
+  font-size: clamp(0.78rem, 2.4vw, 0.94rem);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.capitalMnemonicEmphasis {
+  color: #22e0c6;
+  font-weight: 760;
+}
+
+.capitalMnemonicDetail {
+  color: rgb(195 230 226 / 0.72) !important;
+}
+
+.capitalMnemonicVisual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.38rem;
+}
+
+.capitalMnemonicParts {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  justify-content: center;
+  width: 100%;
+}
+
+.capitalMnemonicPart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.28rem;
+  margin: 0;
+}
+
+.capitalMnemonicPart figcaption {
+  color: rgb(240 252 250 / 0.86);
+  font-size: clamp(0.62rem, 2vw, 0.74rem);
+  font-weight: 850;
+  letter-spacing: 0.06em;
+}
+
+.capitalMnemonicIcon {
+  display: grid;
+  width: clamp(2.2rem, 7vw, 2.8rem);
+  height: clamp(2.2rem, 7vw, 2.8rem);
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid rgb(34 224 198 / 0.5);
+  border-radius: 10px;
+  color: #22e0c6;
+  box-shadow:
+    inset 0 0 12px rgb(34 224 198 / 0.08),
+    0 0 12px rgb(34 224 198 / 0.12);
+}
+
+.capitalMnemonicIcon svg {
+  width: 56%;
+  height: 56%;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.capitalMnemonicPlus {
+  color: rgb(200 232 230 / 0.55);
+  font-size: 1rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  /* Lift to vertically center with icons (figcaption below icons) */
+  margin-bottom: 1.35rem;
+}
+
+.capitalMnemonicBracket {
+  width: 86%;
+  height: 0.45rem;
+  border-bottom: 0.13rem solid rgb(34 224 198 / 0.5);
+  border-left: 0.13rem solid rgb(34 224 198 / 0.5);
+  border-right: 0.13rem solid rgb(34 224 198 / 0.5);
+  border-radius: 0 0 4px 4px;
+}
+
+.capitalMnemonicResult {
+  margin: 0;
+  color: #22e0c6;
+  font-size: clamp(0.82rem, 2.8vw, 1rem);
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-shadow: 0 0 18px rgb(34 224 198 / 0.36);
+}
+
+/* Capital map callout marker */
+
+.capitalMapCallout {
+  display: grid;
+  justify-items: center;
+  pointer-events: none;
+}
+
+.capitalMapCalloutCard {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: min(14rem, 44vw);
+  border: 1px solid rgb(34 224 198 / 0.88);
+  border-radius: 999px;
+  background: rgb(2 14 19 / 0.82);
+  padding: 0.42rem 0.75rem;
+  color: #ffffff;
+  font-size: clamp(0.82rem, 2.8vw, 1.1rem);
+  font-weight: 650;
+  line-height: 1.12;
+  box-shadow:
+    0 10px 26px rgb(0 0 0 / 0.42),
+    0 0 18px rgb(34 224 198 / 0.22),
+    inset 0 1px 0 rgb(255 255 255 / 0.08);
+  backdrop-filter: blur(18px);
+}
+
+.capitalMapCalloutIcon {
+  display: grid;
+  width: 1.1rem;
+  height: 1.1rem;
+  flex: 0 0 auto;
+  place-items: center;
+  color: #22e0c6;
+}
+
+.capitalMapCalloutIcon svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.capitalMapCalloutStem {
+  width: 1px;
+  height: clamp(1.8rem, 6vw, 3rem);
+  background: #22e0c6;
+  box-shadow: 0 0 12px rgb(34 224 198 / 0.58);
+}
+
+@media (min-width: 700px) {
+  .flagTitle {
+    font-size: clamp(2.7rem, 6.2vw, 4.8rem);
+  }
+
+  .flagStudyCard {
+    width: min(100%, 54rem);
+    margin-inline: auto;
+    border-radius: 20px;
+  }
+
+  .flagColorGrid {
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  }
+
+  .capitalTitle {
+    font-size: clamp(2.2rem, 6vw, 4rem);
+  }
+
+  .capitalMnemonicCard {
+    border-radius: 20px;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+  }
+
+  .capitalMnemonicIcon {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+}
+
+@media (min-width: 700px) and (max-height: 900px) {
+  .flagTitle {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+  }
+
+  .flagStudyCard {
+    width: min(100%, 48rem);
+    gap: 0.62rem;
+    padding: 0.75rem 0.9rem;
+  }
+
+  .flagStudyImage {
+    max-height: 10.8rem;
+    border-radius: 12px;
+  }
+
+  .flagFactRow {
+    gap: 0.62rem;
+  }
+
+  .flagFactIcon {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .flagFactRow p {
+    font-size: 1rem;
+    line-height: 1.32;
+  }
+
+  .flagInstruction {
+    font-size: 0.95rem;
+  }
+
+  .flagColorGrid {
+    grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+    gap: 0.5rem;
+  }
+
+  .flagColorButton,
+  .flagColorFace {
+    min-height: 2.85rem;
+  }
+
+  .capitalMnemonicCard {
+    padding: 0.78rem 1rem;
+    gap: 0.85rem;
+  }
+
+  .capitalTitle {
+    font-size: clamp(1.9rem, 5vw, 3.2rem);
+  }
+}
+
+@media (max-width: 390px) {
+  .regionLabel {
+    max-width: 6.6rem;
+    padding: 0.24rem 0.38rem;
+    font-size: 0.58rem;
+  }
+
+  .selectedPanel {
+    gap: 0.8rem;
+    padding: 1.55rem 0.92rem 0.92rem;
+  }
+
+  .defaultPanel {
+    padding: 0.9rem;
+  }
+
+  .primaryCta {
+    min-height: 3.25rem;
+    font-size: 0.92rem;
+  }
+
+  .transitionOverlay {
+    padding-inline: 0.72rem;
+  }
+
+  .transitionPanel {
+    gap: 0.72rem;
+    max-height: calc(100dvh - 7.2rem);
+    padding-inline: 0.72rem;
+  }
+
+  .transitionFlagCard {
+    gap: 0.5rem;
+    padding-inline: 0.65rem;
+  }
+
+  .transitionFlagRoute::before {
+    background-size: 0.94rem 100%;
+  }
+
+  .transitionPrimaryButton,
+  .transitionSecondaryButton {
+    min-height: 3.75rem;
+  }
+
+  .transitionPager {
+    gap: 0.55rem;
+  }
+
+  .transitionPager span {
+    width: 0.62rem;
+    height: 0.62rem;
+  }
+}
+
+/* Simplified transition screen */
+
+.transitionOverlay {
+  grid-template-rows: auto 1fr auto;
+  padding:
+    max(1rem, calc(env(safe-area-inset-top) + 0.7rem))
+    max(1rem, calc(env(safe-area-inset-right) + 1rem))
+    max(1rem, calc(env(safe-area-inset-bottom) + 1rem))
+    max(1rem, calc(env(safe-area-inset-left) + 1rem));
+}
+
+.transitionOverlay::before {
+  background:
+    linear-gradient(180deg, rgb(0 0 0 / 0.62) 0%, transparent 24%, transparent 52%),
+    linear-gradient(0deg, rgb(0 0 0 / 0.78) 0%, rgb(0 0 0 / 0.18) 36%, transparent 58%);
+}
+
+.transitionHeader {
+  align-items: start;
+}
+
+.transitionProgressRail {
+  max-width: min(42rem, calc(100vw - 8.4rem));
+}
+
+.transitionMapSpace {
+  min-height: clamp(12rem, 42dvh, 34rem);
+}
+
+.transitionInfoPanel {
+  position: relative;
+  display: grid;
+  gap: clamp(0.85rem, 2.4vw, 1.2rem);
+  width: min(100%, 55rem);
+  margin-inline: auto;
+  border: 1px solid rgb(124 255 248 / 0.5);
+  border-radius: clamp(1.25rem, 4vw, 2rem);
+  background:
+    radial-gradient(circle at 86% 16%, rgb(70 210 205 / 0.18), transparent 28%),
+    linear-gradient(180deg, rgb(8 35 42 / 0.78), rgb(2 13 18 / 0.88));
+  padding: clamp(1.05rem, 3.2vw, 1.8rem);
+  box-shadow:
+    0 24px 64px rgb(0 0 0 / 0.48),
+    inset 0 1px 0 rgb(255 255 255 / 0.12),
+    0 0 34px rgb(34 224 198 / 0.12);
+  backdrop-filter: blur(26px);
+  pointer-events: auto;
+}
+
+.transitionInsight {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(0.9rem, 2.6vw, 1.35rem);
+  align-items: start;
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.transitionInsightIcon {
+  width: clamp(3.35rem, 10vw, 4.75rem);
+  border-color: #22e0c6;
+  background: rgb(0 238 224 / 0.08);
+}
+
+.transitionCompassIcon {
+  width: 70%;
+  height: 70%;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.2;
+}
+
+.transitionInsight p {
+  color: rgb(248 252 252 / 0.96);
+  font-size: clamp(1.08rem, 4vw, 1.9rem);
+  font-weight: 600;
+  line-height: 1.42;
+  text-wrap: balance;
+}
+
+.transitionInfoPanel .countryFooter {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.7rem, 2.4vw, 1.25rem);
+  margin-top: 0.15rem;
+}
+
+.transitionInfoPanel .countryNavPrev,
+.transitionInfoPanel .countryNavNext {
+  min-height: clamp(3.6rem, 10vw, 4.75rem);
+  font-size: clamp(1rem, 3.2vw, 1.45rem);
+}
+
+@media (min-width: 700px) {
+  .transitionOverlay {
+    padding: 1.8rem 2.2rem 2rem;
+  }
+
+  .transitionInfoPanel {
+    justify-self: center;
+  }
+}
+
+@media (max-width: 520px) {
+  .transitionInfoPanel {
+    border-radius: 1.2rem;
+  }
+
+  .transitionInsight {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .transitionInfoPanel .countryFooter {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ─── Region selector redesign ──────────────────────────────────────────────── */
+
+/* Panel header — shared between default and selected states */
+.panelHeader {
+  display: grid;
+  gap: 0.22rem;
+}
+
+.panelHeading {
+  margin: 0;
+  font-size: clamp(1.1rem, 5vw, 1.45rem);
+  font-weight: 900;
+  line-height: 1.15;
+  color: #ffffff;
+  text-wrap: balance;
+}
+
+.panelSubtitle {
+  margin: 0;
+  font-size: 0.86rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: rgb(200 240 238 / 0.72);
+}
+
+.panelSubtitle em {
+  font-style: normal;
+  color: #22e0c6;
+  font-weight: 750;
+}
+
+/* ── Region preview card ────────────────────────────────────────────────── */
+
+.regionPreviewCard {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.82rem;
+  align-items: start;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 14px;
+  background: rgb(255 255 255 / 0.04);
+  padding: 0.78rem;
+}
+
+.regionThumbnail {
+  --region-thumb-color: #22e0c6;
+
+  width: 6.2rem;
+  height: 5rem;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background:
+    radial-gradient(
+      ellipse at 38% 42%,
+      color-mix(in srgb, var(--region-thumb-color) 42%, transparent),
+      transparent 62%
+    ),
+    linear-gradient(
+      148deg,
+      color-mix(in srgb, var(--region-thumb-color) 20%, #021a28) 0%,
+      #03121a 100%
+    );
+  display: grid;
+  place-items: center;
+  box-shadow:
+    0 8px 20px rgb(0 0 0 / 0.32),
+    inset 0 1px 0 color-mix(in srgb, var(--region-thumb-color) 20%, transparent);
+}
+
+.regionThumbnailGlobe {
+  width: 2.8rem;
+  height: 2.8rem;
+  color: color-mix(in srgb, var(--region-thumb-color) 78%, white);
+  opacity: 0.82;
+}
+
+.regionPreviewInfo {
+  display: grid;
+  gap: 0.28rem;
+  min-width: 0;
+}
+
+.regionPreviewNameRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.regionPreviewName {
+  font-size: clamp(1rem, 4.2vw, 1.25rem);
+  font-weight: 900;
+  color: #22e0c6;
+  line-height: 1.1;
+}
+
+.selectedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.26rem;
+  border: 1px solid rgb(34 224 198 / 0.46);
+  border-radius: 999px;
+  background: rgb(34 224 198 / 0.1);
+  padding: 0.16rem 0.52rem;
+  color: #22e0c6;
+  font-size: 0.71rem;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.regionPreviewMeta {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgb(200 235 232 / 0.68);
+  line-height: 1.3;
+}
+
+.metaDot {
+  color: rgb(200 235 232 / 0.38);
+}
+
+.regionPreviewDesc {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: rgb(230 248 246 / 0.78);
+}
+
+/* ── Feature icons row ─────────────────────────────────────────────────── */
+
+.regionFeatureRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  padding: 0.1rem 0;
+}
+
+.regionFeature {
+  display: grid;
+  justify-items: center;
+  gap: 0.34rem;
+  text-align: center;
+}
+
+.regionFeatureIcon {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: 11px;
+  background: rgb(255 255 255 / 0.055);
+  color: rgb(200 238 234 / 0.78);
+}
+
+.regionFeatureIcon svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.regionFeatureLabel {
+  font-size: 0.64rem;
+  font-weight: 650;
+  color: rgb(200 238 234 / 0.65);
+  line-height: 1.25;
+  white-space: pre-line;
+}
+
+/* ── Secondary action ──────────────────────────────────────────────────── */
+
+.chooseAnotherBtn {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #22e0c6;
+  font-size: 0.88rem;
+  font-weight: 750;
+  text-align: center;
+  padding: 0.25rem;
+  cursor: pointer;
+  opacity: 0.88;
+  transition: opacity 160ms ease;
+}
+
+.chooseAnotherBtn:hover {
+  opacity: 1;
+}
+
+.chooseAnotherBtn:focus-visible {
+  outline: 3px solid rgb(34 224 198 / 0.34);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ─── Map top-bar overlays ──────────────────────────────────────────────── */
+
+.mapTopBar {
+  position: absolute;
+  top: max(0.75rem, env(safe-area-inset-top));
+  right: max(0.75rem, env(safe-area-inset-right));
+  left: max(0.75rem, env(safe-area-inset-left));
+  z-index: 5;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.mapTopBar > * {
+  pointer-events: auto;
+}
+
+/* Recommended chip */
+.recommendedChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 14px;
+  background: rgb(4 14 20 / 0.72);
+  padding: 0.48rem 0.72rem 0.48rem 0.55rem;
+  color: #ffffff;
+  text-align: left;
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 12px 28px rgb(0 0 0 / 0.34),
+    inset 0 1px 0 rgb(255 255 255 / 0.06);
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+.recommendedChip:hover {
+  background: rgb(6 24 32 / 0.84);
+  border-color: rgb(255 255 255 / 0.28);
+}
+
+.recommendedChip:focus-visible {
+  outline: 3px solid rgb(34 224 198 / 0.34);
+  outline-offset: 3px;
+}
+
+.recommendedStar {
+  font-size: 1rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.recommendedText {
+  display: grid;
+  gap: 0.04rem;
+}
+
+.recommendedEyebrow {
+  display: block;
+  font-size: 0.6rem;
+  font-weight: 650;
+  color: rgb(200 235 232 / 0.65);
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+
+.recommendedLabel {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 820;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.recommendedArrow {
+  font-size: 0.95rem;
+  color: rgb(200 235 232 / 0.55);
+  flex-shrink: 0;
+}
+
+/* Map style button */
+.mapStyleBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 14px;
+  background: rgb(4 14 20 / 0.72);
+  padding: 0.52rem 0.85rem;
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 750;
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 12px 28px rgb(0 0 0 / 0.34),
+    inset 0 1px 0 rgb(255 255 255 / 0.06);
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+.mapStyleBtn:hover {
+  background: rgb(6 24 32 / 0.84);
+  border-color: rgb(255 255 255 / 0.28);
+}
+
+.mapStyleBtn:focus-visible {
+  outline: 3px solid rgb(34 224 198 / 0.34);
+  outline-offset: 3px;
+}
+
+.mapStyleBtn svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+  color: rgb(200 238 234 / 0.82);
+}
+
+/* ─── Drag-map hint ─────────────────────────────────────────────────────── */
+
+.dragHint {
+  position: absolute;
+  right: max(0.9rem, env(safe-area-inset-right));
+  bottom: clamp(13rem, 44dvh, 38rem);
+  z-index: 4;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 14px;
+  background: rgb(3 12 18 / 0.72);
+  padding: 0.65rem 0.88rem;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 14px 32px rgb(0 0 0 / 0.36);
+  pointer-events: none;
+  animation: dragHintFadeIn 0.5s ease both;
+}
+
+@keyframes dragHintFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.dragHintIcon {
+  font-size: 1.55rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.dragHintText {
+  display: grid;
+  gap: 0.12rem;
+}
+
+.dragHintTitle {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 820;
+  color: #22e0c6;
+  line-height: 1.2;
+}
+
+.dragHintBody {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: rgb(200 238 234 / 0.68);
+  line-height: 1.3;
+}
+
+@media (min-width: 700px) {
+  .dragHint {
+    bottom: clamp(14rem, 46dvh, 42rem);
+  }
+
+  .mapTopBar {
+    top: max(1.2rem, env(safe-area-inset-top));
+    right: max(1.2rem, env(safe-area-inset-right));
+    left: max(1.2rem, env(safe-area-inset-left));
+  }
+}

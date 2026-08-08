@@ -1,0 +1,230 @@
+{
+  "source": "geoBoundaries gbOpen ADM0",
+  "sourceURL": "https://www.geoboundaries.org/",
+  "apiURL": "https://www.geoboundaries.org/api.html",
+  "license": "CC BY 4.0 compatible gbOpen; see per-boundary metadata.",
+  "precision": 5,
+  "countries": [
+    {
+      "alpha3": "ATG",
+      "name": "Antigua and Barbuda",
+      "boundaryID": "ATG-ADM0-82762519",
+      "boundaryYear": "2009",
+      "boundarySource": "geoBoundaries, Wikimedia",
+      "boundaryLicense": "Public Domain",
+      "licenseSource": "commons.wikimedia.org/wiki/File",
+      "sourceSet": "gbOpen",
+      "bounds": [
+        -62.34816,
+        16.93229,
+        -61.65717,
+        17.72886
+      ],
+      "downloadURL": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/ATG/ADM0/geoBoundaries-ATG-ADM0.geojson"
+    },
+    {
+      "alpha3": "BHS",
+      "name": "The Bahamas",
+      "boundaryID": "BHS-ADM0-85681",
+      "boundaryYear": "2009",
+      "boundarySource": "www.gadm.org, HDX",
+      "boundaryLicense": "Creative Commons Attribution 3.0 Intergovernmental Organisations (CC BY 3.0 IGO)",
+      "licenseSource": "data.humdata.org/dataset/cod-ab-bhs",
+      "sourceSet": "gbHumanitarian",
+      "bounds": [
+        -80.47597,
+        20.91208,
+        -72.71208,
+        27.27139
+      ],
+      "downloadURL": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbHumanitarian/BHS/ADM0/geoBoundaries-BHS-ADM0.geojson"
+    },
+    {
+      "alpha3": "BRB",
+      "name": "Barbados",
+      "boundaryID": "BRB-ADM0-86514546",
+      "boundaryYear": "2005",
+      "boundarySource": "geoBoundaries, Wikimedia",
+      "boundaryLicense": "Creative Commons Attribution 2.5 Generic",
+      "licenseSource": "commons.wikimedia.org/wiki/File",
+      "sourceSet": "gbOpen",
+      "bounds": [
+        -59.65071,
+        13.04506,
+        -59.42034,
+        13.33465
+      ],
+      "downloadURL": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/BRB/ADM0/geoBoundaries-BRB-ADM0.geojson"
+    },
+    {
+      "alpha3": "CUB",
+      "name": "Cuba",
+      "boundaryID": "CUB-ADM0-1007861",
+      "boundaryYear": "2017",
+      "boundarySource": "OpenStreetMap, Wambacher",
+      "boundaryLicense": "Open Data Commons Open Database License 1.0",
+      "licenseSource": "www.openstreetmap.org/copyright",
+      "sourceSet": "gbOpen",
+      "bounds": [
+        -84.95209,
+        19.82643,
+        -74.13167,
+        23.27619
+      ],
+      "downloadURL": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/CUB/ADM0/geoBoundaries-CUB-ADM0.geojson"
+    },
+    {
+      "alpha3": "DMA",
+      "name": "Dominica",
+      "boundaryID": "DMA-ADM0-26965486",
+      "boundaryYear": "2005",
+      "boundarySource": "geoBoundaries, Wikimedia Commons",
+      "boundaryLicense": "Creative Commons Attribution 2.5 Generic",
+      "licenseSource": "commons.wikimedia.org/wiki/File",
+      "sourceSet": "gbOpen",
+      "bounds": [
+        -61.47989,
+        15.20773,
+        -61.24048,
+        15.63943
+      ],
+      "downloadURL": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/DMA/ADM0/geoBoundaries-DMA-ADM0.geojson"
+    },
+    {
+      "alpha3": "DOM",
+      "name": "Dominican Republic",
+      "boundaryID": "DOM-ADM0-20870125",
+      "boundaryYear": "2020",
+      "boundarySource": "Caribbean GeoPortal, N/A",
+      "boundaryLicense": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "licenseSource": "creativecommons.org/licenses/by/4.0/",
+      "sourceSet": "gbOpen",
+      "bounds": [
+        -72.00388,
+        17.47014,
+        -68.32264,
+        19.93236
+      ],
+      "downloadURL": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/DOM/ADM0/geoBoundaries-DOM-ADM0.geojson"
+    },
+    {
+      "alpha3": "GRD",
+      "name": "Grenada",
+      "boundaryID": "GRD-ADM0-78934639",
+      "boundaryYear": "2017",
+      "boundarySource": "OpenStreetMap, Wambacher",
+      "boundaryLicense": "Open Data Commons Open Database License 1.0",
+      "licenseSource": "www.openstreetmap.org/copyright",
+      "sourceSet": "gbOpen",
+      "bounds": [
+        -61.80242,
+        11.98725,
+        -61.37807,
+        12.52997
+      ],
+      "downloadURL": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/GRD/ADM0/geoBoundaries-GRD-ADM0.geojson"
+    },
+    {
+      "alpha3": "HTI",
+      "name": "Haiti",
+      "boundaryID": "HTI-ADM0-30362934",
+      "boundaryYear": "2017",
+      "boundarySource": "OpenStreetMap, Wambacher",
+      "boundaryLicense": "Open Data Commons Open Database License 1.0",
+      "licenseSource": "www.openstreetmap.org/copyright",
+      "sourceSet": "gbOpen",
+      "bounds": [
+        -74.48093,
+        18.02176,
+        -71.62213,
+        20.08963
+      ],
+      "downloadURL": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/HTI/ADM0/geoBoundaries-HTI-ADM0.geojson"
+    },
+    {
+      "alpha3": "JAM",
+      "name": "Jamaica",
+      "boundaryID": "JAM-ADM0-78483674",
+      "boundaryYear": "2014",
+      "boundarySource": "geoBoundaries, Wikimedia Commons",
+      "boundaryLicense": "Public Domain",
+      "licenseSource": "commons.wikimedia.org/wiki/File",
+      "sourceSet": "gbOpen",
+      "bounds": [
+        -78.36832,
+        17.70124,
+        -76.18458,
+        18.52503
+      ],
+      "downloadURL": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/JAM/ADM0/geoBoundaries-JAM-ADM0.geojson"
+    },
+    {
+      "alpha3": "KNA",
+      "name": "Saint Kitts and Nevis",
+      "boundaryID": "KNA-ADM0-85017041",
+      "boundaryYear": "2006",
+      "boundarySource": "geoBoundaries, Wikimedia Commons",
+      "boundaryLicense": "Creative Commons Attribution 2.5 Generic",
+      "licenseSource": "commons.wikimedia.org/wiki/File",
+      "sourceSet": "gbOpen",
+      "bounds": [
+        -62.86434,
+        17.09423,
+        -62.5396,
+        17.41716
+      ],
+      "downloadURL": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/KNA/ADM0/geoBoundaries-KNA-ADM0.geojson"
+    },
+    {
+      "alpha3": "LCA",
+      "name": "Saint Lucia",
+      "boundaryID": "LCA-ADM0-98054014",
+      "boundaryYear": "2005",
+      "boundarySource": "geoBoundaries, Wikimedia Commons",
+      "boundaryLicense": "Public Domain",
+      "licenseSource": "commons.wikimedia.org/wiki/File",
+      "sourceSet": "gbOpen",
+      "bounds": [
+        -61.08057,
+        13.70769,
+        -60.87351,
+        14.10954
+      ],
+      "downloadURL": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/LCA/ADM0/geoBoundaries-LCA-ADM0.geojson"
+    },
+    {
+      "alpha3": "VCT",
+      "name": "Saint Vincent and the Grenadines",
+      "boundaryID": "VCT-ADM0-27863697",
+      "boundaryYear": "2017",
+      "boundarySource": "OpenStreetMap, Wambacher",
+      "boundaryLicense": "Open Data Commons Open Database License 1.0",
+      "licenseSource": "www.openstreetmap.org/copyright",
+      "sourceSet": "gbOpen",
+      "bounds": [
+        -61.46092,
+        12.57879,
+        -61.11483,
+        13.38326
+      ],
+      "downloadURL": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/VCT/ADM0/geoBoundaries-VCT-ADM0.geojson"
+    },
+    {
+      "alpha3": "TTO",
+      "name": "Trinidad and Tobago",
+      "boundaryID": "TTO-ADM0-71565481",
+      "boundaryYear": "2017",
+      "boundarySource": "OpenStreetMap, Wambacher",
+      "boundaryLicense": "Open Data Commons Open Database License 1.0",
+      "licenseSource": "www.openstreetmap.org/copyright",
+      "sourceSet": "gbOpen",
+      "bounds": [
+        -61.93065,
+        10.04242,
+        -60.51763,
+        11.34673
+      ],
+      "downloadURL": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/TTO/ADM0/geoBoundaries-TTO-ADM0.geojson"
+    }
+  ]
+}

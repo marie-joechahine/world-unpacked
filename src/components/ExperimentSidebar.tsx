@@ -7,25 +7,25 @@ import styles from "./ExperimentSidebar.module.css";
 
 const EXPERIMENTS = [
   {
-    href: "/",
+    path: "",
     eyebrow: "MapLibre",
     title: "Tile Lab",
     description: "Satellite, terrain, flags, hover overlays, and R3F effects.",
   },
   {
-    href: "/mapbox",
+    path: "/mapbox",
     eyebrow: "Mapbox",
     title: "GL JS Lab",
     description: "Basemap styles, weather, terrain, camera presets, and route layers.",
   },
   {
-    href: "/three",
+    path: "/three",
     eyebrow: "Three.js",
     title: "3D Sandbox",
     description: "React Three Fiber scenes, shaders, geometry, and camera controls.",
   },
   {
-    href: "/country",
+    path: "/country",
     eyebrow: "Country Data",
     title: "Country Cards",
     description: "Live country facts, flags, and Wikimedia place imagery.",
@@ -36,7 +36,17 @@ function isActiveRoute(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function ExperimentSidebar() {
+function experimentHref(basePath: string, path: string) {
+  const normalizedBasePath = basePath === "/" ? "" : basePath.replace(/\/$/, "");
+  const href = `${normalizedBasePath}${path}`;
+  return href || "/";
+}
+
+type ExperimentSidebarProps = {
+  basePath?: string;
+};
+
+export function ExperimentSidebar({ basePath = "" }: ExperimentSidebarProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -103,12 +113,13 @@ export function ExperimentSidebar() {
 
           <nav className={styles.nav} aria-label="Experiments">
             {EXPERIMENTS.map((experiment) => {
-              const active = isActiveRoute(pathname, experiment.href);
+              const href = experimentHref(basePath, experiment.path);
+              const active = isActiveRoute(pathname, href);
 
               return (
                 <Link
-                  key={experiment.href}
-                  href={experiment.href}
+                  key={href}
+                  href={href}
                   className={styles.navLink}
                   data-active={active}
                   aria-current={active ? "page" : undefined}

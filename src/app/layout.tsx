@@ -7,9 +7,7 @@ import {
 } from "next/font/google";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { ExperimentSidebar } from "@/components/ExperimentSidebar";
 import "./globals.css";
-import styles from "./layout.module.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -47,10 +45,7 @@ export default function RootLayout({
       className={`${plusJakarta.variable} ${playfairDisplay.variable} ${geistMono.variable} ${notoSansJp.variable} h-full antialiased`}
     >
       <body className="min-h-full" suppressHydrationWarning>
-        <div className={styles.appShell}>
-          <ExperimentSidebar />
-          <div className={styles.experimentContent}>{children}</div>
-        </div>
+        {children}
       </body>
     </html>
   );
